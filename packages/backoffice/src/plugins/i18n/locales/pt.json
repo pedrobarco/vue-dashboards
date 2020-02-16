@@ -1,0 +1,12 @@
+{
+  "components": {
+    "Footer": {
+      "text": "Todos os direitos reservados"
+    }
+  },
+  "views": {
+    "Login": {
+      "signInButton": "Entrar"
+    }
+  }
+}
