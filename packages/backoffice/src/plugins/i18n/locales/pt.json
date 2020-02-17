@@ -6,7 +6,8 @@
   },
   "views": {
     "Login": {
-      "signInButton": "Entrar"
+      "description": "Bem-vindo! Inicie a sua sessão no dashboard.",
+      "button": "Entrar"
     }
   }
 }

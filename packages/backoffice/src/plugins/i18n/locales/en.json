@@ -6,7 +6,19 @@
   },
   "views": {
     "Login": {
-      "signInButton": "Sign In"
+      "title": "Login",
+      "description": "Welcome back! Please login to your account",
+      "button": "Sign In",
+      "form": {
+        "email": {
+          "label": "Email",
+          "placeholder": "Email"
+        },
+        "password": {
+          "label": "Password",
+          "placeholder": "***********"
+        }
+      }
     }
   }
 }
