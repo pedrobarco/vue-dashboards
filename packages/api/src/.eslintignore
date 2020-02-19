@@ -1,0 +1,11 @@
+# Ignore yarn node_modules
+node_modules
+
+# Ignore built ts files
+dist
+
+# Ignore typedoc files
+/docs
+
+# Do not ignore eslint config
+!.eslintrc.js
