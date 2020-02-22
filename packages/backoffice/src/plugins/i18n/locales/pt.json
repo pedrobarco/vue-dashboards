@@ -6,7 +6,18 @@
   },
   "views": {
     "Login": {
+      "title": "Login",
       "description": "Bem-vindo! Inicie a sua sessão no dashboard.",
+      "form": {
+        "email": {
+          "label": "Email",
+          "placeholder": "Email"
+        },
+        "password": {
+          "label": "Password",
+          "placeholder": "••••••••••"
+        }
+      },
       "button": "Entrar"
     }
   }
