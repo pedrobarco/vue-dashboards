@@ -16,6 +16,12 @@
         "password": {
           "label": "Password",
           "placeholder": "••••••••••"
+        },
+        "remember": {
+          "label": "Lembrar-me"
+        },
+        "recover": {
+          "prompt": "Não se lembra da password?"
         }
       },
       "button": "Entrar"

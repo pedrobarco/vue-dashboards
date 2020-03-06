@@ -23,6 +23,7 @@
   },
   "devDependencies": {
     "@fullhuman/postcss-purgecss": "^2.0.6",
+    "@tailwindcss/custom-forms": "^0.2.1",
     "@types/jest": "^24.0.19",
     "@types/webpack": "^4.4.0",
     "@typescript-eslint/eslint-plugin": "^2.18.0",
