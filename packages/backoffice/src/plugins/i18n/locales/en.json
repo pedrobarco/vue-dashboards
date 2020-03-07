@@ -15,16 +15,12 @@
         },
         "password": {
           "label": "Password",
-          "placeholder": "••••••••••"
+          "placeholder": "••••••••••",
+          "recover": "Forgot your password?"
         },
-        "remember": {
-          "label": "Remember me"
-        },
-        "recover": {
-          "prompt": "Forgot your password?"
-        }
+        "submit": "Sign In"
       },
-      "button": "Sign In"
+      "error": "These credentials do not match our records."
     }
   }
 }

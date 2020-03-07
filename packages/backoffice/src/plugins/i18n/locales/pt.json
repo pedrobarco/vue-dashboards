@@ -15,16 +15,12 @@
         },
         "password": {
           "label": "Password",
-          "placeholder": "••••••••••"
+          "placeholder": "••••••••••",
+          "recover": "Esqueceu-se da password?"
         },
-        "remember": {
-          "label": "Lembrar-me"
-        },
-        "recover": {
-          "prompt": "Não se lembra da password?"
-        }
+        "submit": "Iniciar Sessão"
       },
-      "button": "Entrar"
+      "error": "Estas credentiais estão incorrectas."
     }
   }
 }

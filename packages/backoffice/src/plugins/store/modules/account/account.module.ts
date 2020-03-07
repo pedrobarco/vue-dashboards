@@ -1,5 +1,5 @@
 import { Module } from "vuex";
-import { RootState } from "@/store/modules/root";
+import { RootState } from "@/plugins/store/modules/root";
 import { AccountState } from "./account.state";
 import { AccountGetters } from "./account.getters";
 import { AccountMutations } from "./account.mutations";

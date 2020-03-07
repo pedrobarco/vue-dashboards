@@ -40,7 +40,11 @@
                 >{{ $t("views.Login.form.email.label") }}</label
               >
               <input
-                class="bg-gray-200 apperance-none border-2 border-gray-200 w-full py-3 px-3 text-gray-700 leading-tight rounded outline-none focus:shadow-outline"
+                class="bg-gray-200 apperance-none border-2 border-gray-200 w-full py-3 px-3 text-gray-700 leading-tight rounded outline-none focus:border-primary-400"
+                :class="{
+                  'border-red-400': error,
+                  'placeholder-red-500': error
+                }"
                 type="email"
                 :placeholder="$t('views.Login.form.email.placeholder')"
                 required
@@ -48,45 +52,41 @@
               />
             </div>
             <div class="mb-1">
-              <label
-                class="block text-gray-700 text-sm font-bold mb-2"
-                for="password"
-                >{{ $t("views.Login.form.password.label") }}</label
-              >
+              <div class="flex items-center justify-between">
+                <label
+                  class="block text-gray-700 text-sm font-bold mb-2"
+                  for="password"
+                  >{{ $t("views.Login.form.password.label") }}</label
+                >
+                <div class="text-sm leading-5 mb-2">
+                  <a
+                    href="#"
+                    class="font-medium text-primary-600 hover:text-primary-500 focus:outline-none focus:underline transition ease-in-out duration-150"
+                    >{{ $t("views.Login.form.password.recover") }}</a
+                  >
+                </div>
+              </div>
               <input
-                class="bg-gray-200 apperance-none border-2 border-gray-200 w-full py-3 px-3 text-gray-700 mb-3 leading-tight tracking-widest rounded outline-none focus:shadow-outline"
+                class="bg-gray-200 apperance-none border-2 border-gray-200 w-full py-3 px-3 text-gray-700 mb-3 leading-tight tracking-widest rounded outline-none focus:border-primary-400"
+                :class="{
+                  'border-red-400': error,
+                  'placeholder-red-500': error
+                }"
                 type="password"
                 :placeholder="$t('views.Login.form.password.placeholder')"
                 required
                 v-model="password"
               />
             </div>
-            <div class="flex items-center justify-between mb-10">
-              <div class="flex items-center">
-                <input
-                  type="checkbox"
-                  class="form-checkbox h-4 w-4 text-primary-600 transition duration-150 ease-in-out"
-                />
-                <label
-                  for="remember_me"
-                  class="ml-2 block text-sm leading-5 text-gray-900"
-                  >{{ $t("views.Login.form.remember.label") }}</label
-                >
-              </div>
-              <div class="text-sm leading-5">
-                <a
-                  href="#"
-                  class="font-medium text-primary-600 hover:text-primary-500 focus:outline-none focus:underline transition ease-in-out duration-150"
-                  >{{ $t("views.Login.form.recover.prompt") }}</a
-                >
-              </div>
+            <div v-if="error" class="text-sm text-red-600">
+              <span>{{ $t("views.Login.error") }}</span>
             </div>
-            <div class="mt-6">
+            <div :class="error ? 'mt-5' : 'mt-10'">
               <button
                 class="text-sm font-bold uppercase tracking-wide py-4 w-full rounded border border-transparent text-white bg-primary-600 hover:bg-primary-500 focus:outline-none focus:border-primary-700 focus:shadow-outline-primary active:bg-primary-700 transition duration-150 ease-in-out"
                 type="submit"
               >
-                {{ $t("views.Login.button") }}
+                {{ $t("views.Login.form.submit") }}
               </button>
             </div>
           </form>
@@ -105,6 +105,10 @@ export default class Login extends Vue {
   private password = "";
   private error = false;
 
+  private clearPassword() {
+    this.password = "";
+  }
+
   private async submitLoginForm() {
     try {
       await this.$store.dispatch("account/login", {
@@ -114,6 +118,7 @@ export default class Login extends Vue {
       this.$router.push("/");
     } catch (e) {
       this.error = true;
+      this.clearPassword();
     }
   }
 }
