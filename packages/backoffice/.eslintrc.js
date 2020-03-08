@@ -19,13 +19,12 @@ module.exports = {
   },
   overrides: [
     {
-      files: [
-        "**/__tests__/*.{j,t}s?(x)",
-        "**/tests/unit/**/*.spec.{j,t}s?(x)"
-      ],
-      env: {
-        jest: true
-      }
+      files: ["**/tests/unit/**/*.spec.{j,t}s?(x)"],
+      extends: ["plugin:jest/all"]
+    },
+    {
+      files: ["**/tests/e2e/**/*.spec.{j,t}s?(x)"],
+      extends: ["plugin:cypress/recommended"]
     }
   ]
 };

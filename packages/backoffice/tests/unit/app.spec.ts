@@ -1,17 +1,21 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils";
-import VueRouter from "vue-router";
+import { createLocalVue, shallowMount } from "@vue/test-utils";
 import App from "@/App.vue";
+import VueRouter from "vue-router";
 
-const localVue = createLocalVue();
-localVue.use(VueRouter);
-const router = new VueRouter();
-
-describe("App", () => {
-  test("is a Vue instance", () => {
-    const wrapper = shallowMount(App, {
+describe("app", () => {
+  function initWrapper() {
+    const localVue = createLocalVue();
+    localVue.use(VueRouter);
+    const router = new VueRouter();
+    return shallowMount(App, {
       localVue,
       router
     });
-    expect(wrapper.isVueInstance()).toBeTruthy();
+  }
+
+  it("is a Vue instance", () => {
+    expect.assertions(1);
+    const wrapper = initWrapper();
+    expect(wrapper.isVueInstance()).toBe(true);
   });
 });
