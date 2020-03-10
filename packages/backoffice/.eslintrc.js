@@ -20,7 +20,10 @@ module.exports = {
   overrides: [
     {
       files: ["**/tests/unit/**/*.spec.{j,t}s?(x)"],
-      extends: ["plugin:jest/all"]
+      extends: ["plugin:jest/all"],
+      rules: {
+        "@typescript-eslint/no-explicit-any": 0
+      }
     },
     {
       files: ["**/tests/e2e/**/*.spec.{j,t}s?(x)"],
