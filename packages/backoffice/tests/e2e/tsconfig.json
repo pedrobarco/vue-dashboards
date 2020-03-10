@@ -3,5 +3,5 @@
     "baseUrl": "../node_modules",
     "types": ["cypress"]
   },
-  "include": ["**/*.spec.{j,t}s?(x)"]
+  "include": ["**/*.spec.ts"]
 }

@@ -101,8 +101,8 @@ import { Vue, Component } from "vue-property-decorator";
 
 @Component
 export default class Login extends Vue {
-  private email = "";
-  private password = "";
+  email = "";
+  password = "";
   private error = false;
 
   private clearPassword() {
