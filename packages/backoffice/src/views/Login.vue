@@ -1,13 +1,20 @@
 <template>
   <div
-    class="flex items-center h-screen bg-gray-100 border-t-8 border-primary sm:border-none"
+    class="flex relative overflow-hidden items-center h-screen bg-gray-100 border-t-8 border-primary-500 sm:border-none"
   >
     <img
-      class="absolute h-12 top-0 right-0 mt-8 mr-4 sm:hidden"
-      src="/img/logo-mini.jpg"
-      alt="Logo"
+      class="absolute hidden lg:block"
+      src="/img/logo-mini.svg"
+      alt="logo"
+      style="width: 1250px; top: -550px; right: -550px;"
     />
-    <div class="w-full sm:w-2/3 lg:w-full max-w-screen-xl mx-auto sm:px-5">
+    <img
+      class="absolute hidden sm:block lg:hidden"
+      src="/img/logo-mini.svg"
+      alt="logo"
+      style="width: 850px; top: 250px; right: 0;"
+    />
+    <div class="w-full sm:w-2/3 lg:w-full max-w-screen-xl mx-auto sm:px-5 z-10">
       <div class="flex sm:bg-white sm:shadow-md sm:rounded-lg">
         <div class="hidden w-1/2 rounded-l lg:block">
           <div class="flex items-center h-full">
@@ -22,8 +29,8 @@
           class="w-full px-8 rounded-r relative sm:px-12 sm:py-24 lg:w-1/2 lg:px-24 lg:py-32"
         >
           <img
-            class="hidden absolute h-12 top-0 right-0 mt-8 mr-8 md:block"
-            src="/img/logo-mini.jpg"
+            class="hidden absolute h-12 top-0 right-0 mt-8 mr-8 sm:block"
+            src="/img/logo-mini.svg"
             alt="Logo"
           />
           <h3 class="text-gray-800 text-4xl font-bold">
