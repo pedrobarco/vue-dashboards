@@ -7,7 +7,10 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
-    "test": "yarn test:unit",
+    "test:unit:watch": "vue-cli-service test:unit --watch",
+    "test:e2e": "vue-cli-service test:e2e --headless",
+    "test:e2e:watch": "vue-cli-service test:e2e",
+    "test": "yarn test:unit && yarn test:e2e",
     "lint": "vue-cli-service lint",
     "i18n:report": "vue-cli-service i18n:report --src './src/**/*.?(js|vue)' --locales './src/i18n/**/*.json'"
   },
@@ -24,6 +27,7 @@
   "devDependencies": {
     "@fullhuman/postcss-purgecss": "^2.0.6",
     "@tailwindcss/custom-forms": "^0.2.1",
+    "@types/faker": "^4.1.10",
     "@types/jest": "^24.0.19",
     "@types/webpack": "^4.4.0",
     "@typescript-eslint/eslint-plugin": "^2.18.0",
@@ -44,6 +48,7 @@
     "eslint-plugin-jest": "^23.8.2",
     "eslint-plugin-prettier": "^3.1.1",
     "eslint-plugin-vue": "^6.1.2",
+    "faker": "^4.1.0",
     "lint-staged": "^9.5.0",
     "prettier": "^1.19.1",
     "tailwindcss": "^1.2.0",

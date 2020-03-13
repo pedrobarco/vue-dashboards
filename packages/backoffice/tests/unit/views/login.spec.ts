@@ -15,7 +15,7 @@ describe("login page", () => {
     const wrapper = initWrapper();
     expect(wrapper.isVueInstance()).toBe(true);
   });
-  it("renders the username and password", () => {
+  it("has default values", () => {
     expect.assertions(2);
     const wrapper = initWrapper();
     expect(wrapper.vm.email).toBe("");

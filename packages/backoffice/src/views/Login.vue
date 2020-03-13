@@ -45,10 +45,11 @@
                   'border-red-400': error,
                   'placeholder-red-500': error
                 }"
-                type="email"
                 :placeholder="$t('views.Login.form.email.placeholder')"
                 required
                 v-model.trim="email"
+                type="email"
+                data-cy="email"
               />
             </div>
             <div class="mb-1">
@@ -72,10 +73,11 @@
                   'border-red-400': error,
                   'placeholder-red-500': error
                 }"
-                type="password"
                 :placeholder="$t('views.Login.form.password.placeholder')"
                 required
                 v-model="password"
+                type="password"
+                data-cy="password"
               />
             </div>
             <div v-if="error" class="text-sm text-red-600">
@@ -85,6 +87,7 @@
               <button
                 class="text-sm font-bold uppercase tracking-wide py-4 w-full rounded border border-transparent text-white bg-primary-600 hover:bg-primary-500 focus:outline-none focus:border-primary-700 focus:shadow-outline-primary active:bg-primary-700 transition duration-150 ease-in-out"
                 type="submit"
+                data-cy="submit"
               >
                 {{ $t("views.Login.form.submit") }}
               </button>
