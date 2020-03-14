@@ -46,4 +46,12 @@ describe("login", () => {
     cy.get("[data-cy=submit]").click();
     cy.url().should("be", "http://localhost:8080");
   });
+  it("redirects to home if already logged in", () => {
+    cy.visit("http://localhost:8080/#/login");
+    cy.get("[data-cy=email]").type("admin@admin");
+    cy.get("[data-cy=password]").type("admin");
+    cy.get("[data-cy=submit]").click();
+    cy.visit("http://localhost:8080/#/login");
+    cy.url().should("be", "http://localhost:8080");
+  });
 });

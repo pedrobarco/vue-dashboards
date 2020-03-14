@@ -10,7 +10,7 @@
     "test:unit:watch": "vue-cli-service test:unit --watch",
     "test:e2e": "vue-cli-service test:e2e --headless",
     "test:e2e:watch": "vue-cli-service test:e2e",
-    "test": "yarn test:unit && yarn test:e2e",
+    "test": "yarn test:unit",
     "lint": "vue-cli-service lint",
     "i18n:report": "vue-cli-service i18n:report --src './src/**/*.?(js|vue)' --locales './src/i18n/**/*.json'"
   },
