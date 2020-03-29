@@ -9,6 +9,7 @@
   "scripts": {
     "build": "yarn clean && yarn build:src && yarn build:docs",
     "build:src": "yarn tsc",
+    "build:src:types": "yarn tsc --noEmit",
     "build:docs": "yarn build:docs:typedoc",
     "build:docs:typedoc": "yarn typedoc",
     "build:docs:redoc": "yarn redoc-cli bundle ./openapi.yaml --output ./docs/redoc.html",
@@ -21,12 +22,8 @@
     "test:watch": "yarn jest --coverage --watch",
     "clean": "yarn clean:src && yarn clean:docs",
     "clean:src": "yarn rimraf dist/",
-    "clean:docs": "yarn rimraf docs/"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "tsc --noEmit && yarn test && lint-staged"
-    }
+    "clean:docs": "yarn rimraf docs/",
+    "precommit": "yarn build:src:types && yarn test && yarn lint-staged"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
@@ -56,7 +53,6 @@
     "eslint-plugin-jsdoc": "^18.6.2",
     "eslint-plugin-node": "^11.0.0",
     "eslint-plugin-prettier": "^3.1.2",
-    "husky": "^3.1.0",
     "jest": "^24.9.0",
     "lint-staged": "^9.5.0",
     "nodemon": "^2.0.2",
