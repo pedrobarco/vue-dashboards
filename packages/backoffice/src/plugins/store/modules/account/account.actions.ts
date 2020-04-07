@@ -18,5 +18,8 @@ export const AccountActions: ActionTree<AccountState, RootState> = {
     } else {
       throw new Error("Invalid user credentials.");
     }
+  },
+  logout({ commit }) {
+    commit("setToken", null);
   }
 };
