@@ -1,12 +1,10 @@
 <template>
-  <div
-    class="relative overflow-hidden bg-gray-100 border-t-8 border-primary-500 sm:border-none"
-  >
+  <div class="relative overflow-hidden bg-white">
     <img
       class="absolute hidden lg:block"
       src="/img/logo-mini.svg"
       alt="logo"
-      style="height: 1250px; top: -250px; right: -450px;"
+      style="height: 1250px; top: -325px; right: -450px;"
     />
     <img
       class="absolute hidden sm:block lg:hidden"
@@ -15,7 +13,7 @@
       style="height: 1250px; top: -250px; right: -250px;"
     />
     <img
-      class="absolute sm:hidden h-16 top-0 right-0 mt-8 mr-8"
+      class="absolute sm:hidden h-20 top-0 right-0 mt-8 mr-8"
       src="/img/logo-mini.svg"
       alt="Logo"
     />

@@ -1,5 +1,8 @@
 module.exports = {
   theme: {
+    fontFamily: {
+      // TODO: change sans font settings e.g. ` sans: ["Poppins"] `
+    },
     extend: {
       colors: {
         primary: {
