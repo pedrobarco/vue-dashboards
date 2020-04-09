@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>App layout</h1>
+    <h1 class="text-5xl font-bold text-center text-gray-700">App Layout</h1>
     <div class="container">
       <router-view />
     </div>

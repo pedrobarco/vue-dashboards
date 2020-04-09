@@ -1,7 +1,6 @@
 {
   "name": "vue-dashboards",
   "version": "1.0.0",
-  "main": "index.js",
   "repository": "git@github.com:pedrobarco/vue-dashboards.git",
   "author": "Pedro Barco <pedro.barco@linkconsulting.com>",
   "contributors": [
@@ -10,9 +9,32 @@
   "license": "MIT",
   "private": true,
   "workspaces": [
-	  "packages/*"
+    "packages/*"
   ],
+  "scripts": {
+    "build": "yarn lerna run build",
+    "test": "yarn lerna run test",
+    "lint": "yarn lerna run lint"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lerna run --concurrency 1 --stream precommit",
+      "prepare-commit-msg": "exec < /dev/tty && git cz --hook || true",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
   "devDependencies": {
+    "@commitlint/cli": "^8.3.5",
+    "@commitlint/config-conventional": "^8.3.4",
+    "@commitlint/config-lerna-scopes": "^8.3.4",
+    "commitizen": "^4.0.3",
+    "cz-conventional-changelog": "3.1.0",
+    "husky": "^4.2.3",
     "lerna": "^3.20.2"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }

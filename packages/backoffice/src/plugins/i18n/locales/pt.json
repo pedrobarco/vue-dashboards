@@ -6,7 +6,21 @@
   },
   "views": {
     "Login": {
-      "signInButton": "Entrar"
+      "title": "Login",
+      "description": "Bem-vindo! Inicie a sua sessão no dashboard.",
+      "form": {
+        "email": {
+          "label": "Email",
+          "placeholder": "Email"
+        },
+        "password": {
+          "label": "Password",
+          "placeholder": "••••••••••",
+          "recover": "Esqueceu-se da password?"
+        },
+        "submit": "Iniciar Sessão"
+      },
+      "error": "Estas credentiais estão incorrectas."
     }
   }
 }

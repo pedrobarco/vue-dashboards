@@ -6,7 +6,21 @@
   },
   "views": {
     "Login": {
-      "signInButton": "Sign In"
+      "title": "Login",
+      "description": "Welcome back! Please login to your account",
+      "form": {
+        "email": {
+          "label": "Email",
+          "placeholder": "Email"
+        },
+        "password": {
+          "label": "Password",
+          "placeholder": "••••••••••",
+          "recover": "Forgot your password?"
+        },
+        "submit": "Sign In"
+      },
+      "error": "These credentials do not match our records."
     }
   }
 }
