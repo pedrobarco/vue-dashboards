@@ -15,3 +15,140 @@ servers:
 info:
   title: Dash API
   version: "1.0.0"
+  description: API para usar no DashBoard
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  responses:
+    UnauthorizedError:
+      description: Token em falta ou invalido
+security:
+  - bearerAuth: ["OAuth2"]
+paths:
+  /users:
+    get:
+      summary: Lista utilizadores
+      description: Lista de todos os utilizadores
+      responses:
+        200:
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                maxItems: 25
+                minItems: 1
+                items:
+                  properties:
+                    codigo:
+                      type: string
+                      example: utilizador
+                    nome:
+                      type: string
+                      example: Paulo Rodrigues
+                    email:
+                      type: string
+                      example: ash@to.me
+                    activo:
+                      type: boolean
+                      example: 1
+                    administrador:
+                      type: boolean
+                      example: 1
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+  /vendas/statis:
+    get:
+      summary: Estatistica de vendas
+      description: Top 5 clientes com mais vendas
+      responses:
+        200:
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                maxItems: 5
+                minItems: 1
+                type: array
+                items:
+                  properties:
+                    entidade:
+                      type: string
+                      example: 10Xpto
+                    nome:
+                      type: string
+                      example: Inforshow
+                    totalmerc:
+                      type: number
+                      example: 8873,90
+        401:
+          $ref: '#/components/responses/UnauthorizedError'              
+  /vendas/artigos/{cliente}:
+    get:
+      summary: Estatistica de vendas
+      description: Obter lista top 5 artigos vendidos pelo cliente especifico
+      parameters:
+        - in: path
+          name: cliente
+          required: true
+          description: o codigo do cliente, não o nome.
+          schema:
+            type: string
+            example: 10Xpto
+      responses:
+        200:
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                maxItems: 5
+                minItems: 1
+                type: array
+                items:
+                  properties:
+                    artigo:
+                      type: string
+                      example: A0005
+                    descricao:
+                      type: string
+                      example: Mesa p/ PC
+                    quantidade:
+                      type: integer
+                      example: 300
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+  /vendas/artigos/stock/{artigo}:
+    get:
+      summary: Stock Artigo X
+      description: Obter valor do stock actual do artigo selecionado
+      parameters:
+        - in: path
+          name: artigo
+          required: true
+          description: o codigo do artigo, não a descricao.
+          schema:
+            type: string
+            example: A0005
+      responses:
+        200:
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                maxItems: 1
+                items:
+                  properties:
+                    artigo:
+                      type: string
+                      example: A0005
+                    descricao:
+                      type: string
+                      example: Mesa p/ PC
+                    quantidade:
+                      type: integer
+                      example: 300
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
