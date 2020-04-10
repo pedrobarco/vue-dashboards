@@ -4,3 +4,4 @@ declare module "*.vue" {
 }
 
 declare module "tailwindcss";
+declare module "vue-clickaway";

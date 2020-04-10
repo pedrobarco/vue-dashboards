@@ -14,7 +14,11 @@
         <span class="font-medium">Jack Finnigan</span>
         <span class="text-sm text-gray-700 opacity-50 -mt-1">Super Admin</span>
       </div>
-      <button @click="toggleDropdown" class="ml-2 focus:outline-none">
+      <button
+        v-on-clickaway="closeDropdown"
+        @click="openDropdown"
+        class="ml-2 focus:outline-none"
+      >
         <svg
           class="h-4 w-4 text-gray-800"
           xmlns="http://www.w3.org/2000/svg"
@@ -32,7 +36,7 @@
       </button>
     </div>
     <div
-      v-if="isDropdownOpen"
+      v-show="isDropdownOpen"
       class="absolute right-0 mt-2 py-3 w-48 bg-white rounded-md shadow"
     >
       <div class="md:hidden flex flex-col text-gray-800 text-left ml-6 mb-4">
@@ -42,16 +46,13 @@
       <hr class="block md:hidden text-gray-200 mx-8 mb-2" />
       <div class="flex flex-col">
         <router-link
-          @click.native="toggleDropdown"
           class="flex items-center py-3 px-4 text-gray-700 border-l-4 border-white hover:border-primary-500 hover:bg-gray-200 hover:text-primary-500"
           v-for="route in accountRoutes"
           :key="route.name"
           :to="route.path"
         >
           <div v-html="route.metadata.icon" class="dropdown-link--icon" />
-          <span class="capitalize ml-4">
-            {{ route.name }}
-          </span>
+          <span class="capitalize ml-4">{{ route.name }}</span>
         </router-link>
         <a
           @click="logout"
@@ -74,25 +75,30 @@
               <line x1="21" y1="12" x2="9" y2="12" />
             </svg>
           </div>
-          <span class="ml-4">
-            Log out
-          </span>
+          <span class="ml-4">Log out</span>
         </a>
       </div>
     </div>
   </div>
 </template>
 <script lang="ts">
+import { mixin as clickaway } from "vue-clickaway";
 import { Vue, Component } from "vue-property-decorator";
 import { accountRoutes } from "@/plugins/router";
 
-@Component
+@Component({
+  mixins: [clickaway]
+})
 export default class AccountDropdown extends Vue {
   accountRoutes = accountRoutes;
   isDropdownOpen = false;
 
-  toggleDropdown() {
-    this.isDropdownOpen = !this.isDropdownOpen;
+  openDropdown() {
+    this.isDropdownOpen = true;
+  }
+
+  closeDropdown() {
+    this.isDropdownOpen = false;
   }
 
   logout() {
