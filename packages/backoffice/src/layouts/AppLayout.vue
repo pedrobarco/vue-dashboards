@@ -1,25 +1,6 @@
 <template>
   <div class="flex h-screen bg-gray-100">
-    <!-- Side Navbar -->
-    <nav class="bg-white h-full flex flex-col border-r-2 border-gray-200">
-      <div class="mt-8 ">
-        <img class="h-10 mx-auto" src="/img/logo-mini.svg" alt="Lintifor" />
-      </div>
-      <div class="flex flex-col mt-32">
-        <router-link
-          class="sidebar-desktop-link"
-          active-class="sidebar-desktop-link-active"
-          v-for="route in appRoutes"
-          :key="route.name"
-          :to="route.path"
-        >
-          <div
-            v-html="route.metadata.icon"
-            class="ml-4 mr-6 sidebar-link--icon"
-          />
-        </router-link>
-      </div>
-    </nav>
+    <Sidenav />
     <!-- TopNav -->
     <div class="flex-1 flex flex-col">
       <div class="flex items-center justify-end my-8 px-8">
@@ -61,7 +42,7 @@
         <AccountDropdown />
       </div>
       <div class="ml-12 mt-8 md:mt-0">
-        <h1 class="text-3xl font-medium">
+        <h1 class="capitalize text-3xl font-medium">
           {{ $route.name }}
         </h1>
       </div>
@@ -75,28 +56,19 @@
 
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
-import { appRoutes } from "@/plugins/router";
 import AccountDropdown from "@/components/AccountDropdown.vue";
+import Sidenav from "@/components/Sidenav.vue";
 
 @Component({
   components: {
-    AccountDropdown
+    AccountDropdown,
+    Sidenav
   }
 })
-export default class AppLayout extends Vue {
-  appRoutes = appRoutes;
-}
+export default class AppLayout extends Vue {}
 </script>
 
 <style lang="postcss">
-.sidebar-desktop-link {
-  @apply flex items-center px-2 py-4 mb-4 font-medium text-gray-700 border-l-4 border-white;
-}
-
-.sidebar-desktop-link-active {
-  @apply text-primary-600 border-primary-500;
-}
-
 .sidebar-mobile-link {
   @apply block px-4 py-2 ml-4;
 }

@@ -1,11 +1,8 @@
 <template>
   <div class="relative">
-    <button
-      @click="toggleDropdown"
-      class="flex items-center focus:outline-none"
-    >
+    <div class="flex items-center focus:outline-none">
       <div
-        class="h-10 w-10 ml-6 rounded-full overflow-hidden border-2 border-gray-200 focus:outline-none"
+        class="h-10 w-10 ml-6 rounded-full overflow-hidden border-2 border-gray-200"
       >
         <img
           class="h-full w-full object-cover"
@@ -13,11 +10,11 @@
           alt
         />
       </div>
-      <div class="flex flex-col text-gray-800 text-left ml-2">
+      <div class="hidden md:flex flex-col text-gray-800 text-left ml-2">
         <span class="font-medium">Jack Finnigan</span>
         <span class="text-sm text-gray-700 opacity-50 -mt-1">Super Admin</span>
       </div>
-      <span class="ml-2">
+      <button @click="toggleDropdown" class="ml-2 focus:outline-none">
         <svg
           class="h-4 w-4 text-gray-800"
           xmlns="http://www.w3.org/2000/svg"
@@ -32,38 +29,66 @@
         >
           <polyline points="6 9 12 15 18 9" />
         </svg>
-      </span>
-    </button>
+      </button>
+    </div>
     <div
       v-if="isDropdownOpen"
-      class="absolute right-0 mt-2 py-2 w-48 bg-white rounded-lg shadow-xl"
+      class="absolute right-0 mt-2 py-3 w-48 bg-white rounded-md shadow"
     >
-      <router-link
-        @click.native="toggleDropdown"
-        class="block px-4 py-2 text-gray-800 hover:bg-primary-500 hover:text-white"
-        v-for="route in userRoutes"
-        :key="route.name"
-        :to="route.path"
-      >
-        {{ route.name }}
-      </router-link>
-      <hr />
-      <a
-        @click="logout"
-        class="block cursor-pointer px-4 py-2 text-gray-800 hover:bg-primary-500 hover:text-white"
-      >
-        Sign out
-      </a>
+      <div class="md:hidden flex flex-col text-gray-800 text-left ml-6 mb-4">
+        <span class="font-medium">Jack Finnigan</span>
+        <span class="text-sm text-gray-700 opacity-50 -mt-1">Super Admin</span>
+      </div>
+      <hr class="block md:hidden text-gray-200 mx-8 mb-2" />
+      <div class="flex flex-col">
+        <router-link
+          @click.native="toggleDropdown"
+          class="flex items-center py-3 px-4 text-gray-700 border-l-4 border-white hover:border-primary-500 hover:bg-gray-200 hover:text-primary-500"
+          v-for="route in accountRoutes"
+          :key="route.name"
+          :to="route.path"
+        >
+          <div v-html="route.metadata.icon" class="dropdown-link--icon" />
+          <span class="capitalize ml-4">
+            {{ route.name }}
+          </span>
+        </router-link>
+        <a
+          @click="logout"
+          class="cursor-pointer flex items-center py-3 px-4 text-gray-700 border-l-4 border-white hover:border-primary-500 hover:bg-gray-200 hover:text-primary-500"
+        >
+          <div class="dropdown-link--icon">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+              <polyline points="16 17 21 12 16 7" />
+              <line x1="21" y1="12" x2="9" y2="12" />
+            </svg>
+          </div>
+          <span class="ml-4">
+            Log out
+          </span>
+        </a>
+      </div>
     </div>
   </div>
 </template>
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
-import { userRoutes } from "@/plugins/router";
+import { accountRoutes } from "@/plugins/router";
 
 @Component
 export default class AccountDropdown extends Vue {
-  userRoutes = userRoutes;
+  accountRoutes = accountRoutes;
   isDropdownOpen = false;
 
   toggleDropdown() {
@@ -76,3 +101,13 @@ export default class AccountDropdown extends Vue {
   }
 }
 </script>
+
+<style lang="postcss">
+.dropdown-link--icon > svg {
+  @apply h-5 w-5 text-gray-600 opacity-50;
+}
+
+a:hover > .dropdown-link--icon > svg {
+  @apply text-primary-600 opacity-100;
+}
+</style>
