@@ -1,5 +1,7 @@
 /// <reference types="cypress" />
 
+import faker from "faker";
+
 describe("login", () => {
   it("loads the page", () => {
     cy.visit("/#/login")
@@ -22,7 +24,7 @@ describe("login", () => {
   it("validates the email address", () => {
     cy.visit("/#/login")
       .get("[data-cy=email]")
-      .type(cy.faker.internet.userName())
+      .type(faker.internet.userName())
       .get("[data-cy=submit]")
       .click()
       .hash()
@@ -31,7 +33,7 @@ describe("login", () => {
   it("requires a password", () => {
     cy.visit("/#/login")
       .get("[data-cy=email]")
-      .type(cy.faker.internet.email())
+      .type(faker.internet.email())
       .get("[data-cy=submit]")
       .click()
       .hash()
@@ -40,23 +42,24 @@ describe("login", () => {
   it("denies login to invalid login credentials", () => {
     cy.visit("/#/login")
       .get("[data-cy=email]")
-      .type(cy.faker.internet.email())
+      .type(faker.internet.email())
       .get("[data-cy=password]")
-      .type(cy.faker.internet.password())
+      .type(faker.internet.password())
       .get("[data-cy=submit]")
       .click()
       .hash()
       .should("eq", "#/login");
   });
-  it("validates login credentials", () => {
+  it("successfully logs in using the submit button", () => {
+    cy.login();
+  });
+  it("successfully logs in using {enter} as a shortcut", () => {
     cy.visit("/#/login")
       .get("[data-cy=email]")
       .type(Cypress.env("ADMIN_EMAIL"))
       .get("[data-cy=password]")
-      .type(Cypress.env("ADMIN_PASSWORD"))
-      .get("[data-cy=submit]")
-      .click()
+      .type(`${Cypress.env("ADMIN_PASSWORD")}{enter}`)
       .hash()
-      .should("eq", "#/dashboard");
+      .should("not.eq", "#/login");
   });
 });

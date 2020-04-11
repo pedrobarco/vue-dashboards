@@ -2,8 +2,6 @@
 
 describe("app", () => {
   it("loads the page", () => {
-    cy.visit("#/")
-      .hash()
-      .should("eq", "#/login");
+    cy.visit("#/");
   });
 });

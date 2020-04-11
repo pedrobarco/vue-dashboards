@@ -24,6 +24,14 @@
 //
 // -- This is will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
-import * as faker from "faker";
-
-cy.faker = faker;
+Cypress.Commands.add("login", () => {
+  cy.visit("/#/login")
+    .get("[data-cy=email]")
+    .type(Cypress.env("ADMIN_EMAIL"))
+    .get("[data-cy=password]")
+    .type(Cypress.env("ADMIN_PASSWORD"))
+    .get("[data-cy=submit]")
+    .click()
+    .hash()
+    .should("not.eq", "#/login");
+});

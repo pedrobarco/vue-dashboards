@@ -25,6 +25,10 @@ const routes = [
     children: [...appRoutes, ...accountRoutes],
     component: () =>
       import(/* webpackChunkName: "appLayout" */ "@/layouts/AppLayout.vue")
+  },
+  {
+    path: "*",
+    redirect: "/"
   }
 ];
 
