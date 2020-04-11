@@ -7,7 +7,11 @@ export const AccountActions: ActionTree<AccountState, RootState> = {
   login({ commit }, payload) {
     const { email, password } = payload;
     let token = null;
-    if (email === env.app.admin.email && password === env.app.admin.password) {
+    if (
+      env.app.admin.token &&
+      email === env.app.admin.email &&
+      password === env.app.admin.password
+    ) {
       token = env.app.admin.token;
     } else {
       //TODO: call the API service /auth endpoint
