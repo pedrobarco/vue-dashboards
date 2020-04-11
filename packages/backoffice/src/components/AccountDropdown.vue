@@ -16,7 +16,7 @@
       </div>
       <button
         v-on-clickaway="closeDropdown"
-        @click="openDropdown"
+        @click="toggleDropdown"
         class="ml-2 focus:outline-none"
       >
         <svg
@@ -99,6 +99,10 @@ export default class AccountDropdown extends Vue {
 
   closeDropdown() {
     this.isDropdownOpen = false;
+  }
+
+  toggleDropdown() {
+    this.isDropdownOpen = !this.isDropdownOpen;
   }
 
   logout() {
