@@ -1,0 +1,10 @@
+{
+  "name": "database",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "docker build Dockerfile.dev -t primavera-db",
+    "dev": "docker run --name primavera-db-dev -d -p 1443:1443 -e SA_PASSWORD=Pocosi12 primavera-db",
+	"clean": "docker stop primavera-db-dev && docker rm primavera-db-dev"
+  }
+}
