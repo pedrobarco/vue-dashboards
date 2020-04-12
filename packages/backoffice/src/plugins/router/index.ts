@@ -21,6 +21,7 @@ const routes = [
   },
   {
     path: "/",
+    redirect: "/dashboard",
     beforeEnter: routerGuard(Guards.requireAuth),
     children: [...appRoutes, ...accountRoutes],
     component: () =>

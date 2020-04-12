@@ -1,5 +1,8 @@
 <template>
-  <nav class="bg-white flex flex-col border-r-2 border-gray-200">
+  <nav
+    data-cy="side-navbar"
+    class="bg-white flex flex-col border-r-2 border-gray-200"
+  >
     <div class="mt-8 ">
       <img class="h-10 mx-auto" src="/img/logo-mini.svg" alt="Lintifor" />
     </div>
@@ -10,6 +13,7 @@
         v-for="route in appRoutes"
         :key="route.name"
         :to="route.path"
+        :data-cy="`side-${route.path}-link`"
       >
         <div v-html="route.metadata.icon" class="side-navbar-link--icon" />
       </router-link>

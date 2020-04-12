@@ -1,9 +1,5 @@
 export const appRoutes = [
   {
-    path: "/",
-    redirect: "dashboard"
-  },
-  {
     path: "dashboard",
     name: "dashboard",
     metadata: {

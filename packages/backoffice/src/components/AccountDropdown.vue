@@ -46,19 +46,24 @@
       <hr class="block md:hidden text-gray-200 mx-8 mb-2" />
       <div class="flex flex-col">
         <router-link
-          class="flex items-center py-3 px-4 text-gray-700 border-l-4 border-white hover:border-primary-500 hover:bg-gray-200 hover:text-primary-500"
+          class="flex items-center py-3 px-4 text-gray-700 border-l-4 border-white hover:bg-gray-200 hover:text-primary-600 account-dropdown-link"
+          active-class="text-primary-600 bg-gray-200 border-primary-500"
           v-for="route in accountRoutes"
           :key="route.name"
           :to="route.path"
+          :data-cy="`${route.path}-link`"
         >
-          <div v-html="route.metadata.icon" class="dropdown-link--icon" />
+          <div
+            v-html="route.metadata.icon"
+            class="account-dropdown-link--icon"
+          />
           <span class="capitalize ml-4">{{ route.name }}</span>
         </router-link>
         <a
           @click="logout"
-          class="cursor-pointer flex items-center py-3 px-4 text-gray-700 border-l-4 border-white hover:border-primary-500 hover:bg-gray-200 hover:text-primary-500"
+          class="cursor-pointer flex items-center py-3 px-4 text-gray-700 border-l-4 border-white hover:bg-gray-200 hover:text-primary-600 account-dropdown-link"
         >
-          <div class="dropdown-link--icon">
+          <div class="account-dropdown-link--icon">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -113,11 +118,18 @@ export default class AccountDropdown extends Vue {
 </script>
 
 <style lang="postcss">
-.dropdown-link--icon > svg {
+.account-dropdown-link:hover:not(.router-link-exact-active) {
+  @apply border-gray-200;
+}
+
+.account-dropdown-link--icon > svg {
   @apply h-5 w-5 text-gray-600 opacity-50;
 }
 
-a:hover > .dropdown-link--icon > svg {
+.account-dropdown-link.router-link-exact-active
+  > .account-dropdown-link--icon
+  > svg,
+.account-dropdown-link:hover > .account-dropdown-link--icon > svg {
   @apply text-primary-600 opacity-100;
 }
 </style>
