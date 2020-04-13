@@ -1,13 +1,13 @@
 <template>
-  <button
-    v-on-clickaway="closeDropdown"
-    @click="toggleDropdown"
-    class="relative focus:outline-none"
-    data-cy="account-dropdown"
-  >
-    <div class="flex items-center">
+  <div class="relative">
+    <button
+      v-on-clickaway="closeDropdown"
+      @click="toggleDropdown"
+      class="flex items-center focus:outline-none"
+      data-cy="account-dropdown"
+    >
       <div
-        class="h-10 w-10 ml-6 rounded-full overflow-hidden border-2 border-gray-200"
+        class="h-8 w-8 md:h-10 md:w-10 ml-6 rounded-full overflow-hidden border-2 border-gray-200"
       >
         <img
           class="h-full w-full object-cover"
@@ -19,7 +19,7 @@
         <span class="font-medium">Jack Finnigan</span>
         <span class="text-sm text-gray-700 opacity-50 -mt-1">Super Admin</span>
       </div>
-      <div class="ml-2 focus:outline-none">
+      <div class="md:ml-2">
         <svg
           class="h-4 w-4 text-gray-800"
           xmlns="http://www.w3.org/2000/svg"
@@ -35,7 +35,7 @@
           <polyline points="6 9 12 15 18 9" />
         </svg>
       </div>
-    </div>
+    </button>
     <div
       v-show="isDropdownOpen"
       class="absolute right-0 mt-2 py-3 w-48 bg-white rounded-md shadow"
@@ -48,7 +48,7 @@
       <hr class="block md:hidden text-gray-200 mx-8 mb-2" />
       <div class="flex flex-col">
         <router-link
-          class="flex items-center py-3 px-4 text-gray-700 border-l-4 border-white hover:bg-gray-200 hover:text-primary-600 account-dropdown-link"
+          class="flex items-center py-3 px-6 text-gray-700 border-r-4 border-white hover:bg-gray-200 hover:text-primary-600 account-dropdown-link"
           active-class="text-primary-600 bg-gray-200 border-primary-500"
           v-for="route in accountRoutes"
           :key="route.name"
@@ -63,7 +63,7 @@
         </router-link>
         <a
           @click="logout"
-          class="cursor-pointer flex items-center py-3 px-4 text-gray-700 border-l-4 border-white hover:bg-gray-200 hover:text-primary-600 account-dropdown-link"
+          class="cursor-pointer flex items-center py-3 px-6 text-gray-700 border-r-4 border-white hover:bg-gray-200 hover:text-primary-600 account-dropdown-link"
           data-cy="logout-link"
         >
           <div class="account-dropdown-link--icon">
@@ -87,7 +87,7 @@
         </a>
       </div>
     </div>
-  </button>
+  </div>
 </template>
 <script lang="ts">
 import { mixin as clickaway } from "vue-clickaway";

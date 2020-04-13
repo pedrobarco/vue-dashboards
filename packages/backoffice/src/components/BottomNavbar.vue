@@ -1,14 +1,14 @@
 <template>
   <nav
     data-cy="bottom-navbar"
-    class="bg-white flex justify-between border-t-2 border-gray-200"
+    class="relative flex justify-center items-center bg-white border-t-2 border-gray-200"
   >
-    <div class="ml-8 my-auto">
-      <img class="h-8" src="/img/logo-mini.svg" alt="Lintifor" />
+    <div class="absolute left-0 ml-4">
+      <img class="h-6 w-6" src="/img/logo-mini.svg" alt="Lintifor" />
     </div>
-    <div class="flex mx-auto">
+    <div class="flex items-center">
       <router-link
-        class="flex items-center py-3 px-6 text-gray-700 border-t-4 border-white hover:bg-gray-200 bottom-navbar-link"
+        class="flex items-center py-3 px-4 text-gray-700 border-t-4 border-white hover:bg-gray-200 bottom-navbar-link"
         active-class="text-primary-600 bg-gray-200 border-primary-500"
         v-for="route in appRoutes"
         :key="route.name"
