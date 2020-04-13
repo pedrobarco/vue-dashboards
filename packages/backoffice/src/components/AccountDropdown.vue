@@ -1,6 +1,11 @@
 <template>
-  <div class="relative">
-    <div class="flex items-center focus:outline-none">
+  <button
+    v-on-clickaway="closeDropdown"
+    @click="toggleDropdown"
+    class="relative focus:outline-none"
+    data-cy="account-dropdown"
+  >
+    <div class="flex items-center">
       <div
         class="h-10 w-10 ml-6 rounded-full overflow-hidden border-2 border-gray-200"
       >
@@ -14,11 +19,7 @@
         <span class="font-medium">Jack Finnigan</span>
         <span class="text-sm text-gray-700 opacity-50 -mt-1">Super Admin</span>
       </div>
-      <button
-        v-on-clickaway="closeDropdown"
-        @click="toggleDropdown"
-        class="ml-2 focus:outline-none"
-      >
+      <div class="ml-2 focus:outline-none">
         <svg
           class="h-4 w-4 text-gray-800"
           xmlns="http://www.w3.org/2000/svg"
@@ -33,11 +34,12 @@
         >
           <polyline points="6 9 12 15 18 9" />
         </svg>
-      </button>
+      </div>
     </div>
     <div
       v-show="isDropdownOpen"
       class="absolute right-0 mt-2 py-3 w-48 bg-white rounded-md shadow"
+      data-cy="account-dropdown--dropdown"
     >
       <div class="md:hidden flex flex-col text-gray-800 text-left ml-6 mb-4">
         <span class="font-medium">Jack Finnigan</span>
@@ -62,6 +64,7 @@
         <a
           @click="logout"
           class="cursor-pointer flex items-center py-3 px-4 text-gray-700 border-l-4 border-white hover:bg-gray-200 hover:text-primary-600 account-dropdown-link"
+          data-cy="logout-link"
         >
           <div class="account-dropdown-link--icon">
             <svg
@@ -84,7 +87,7 @@
         </a>
       </div>
     </div>
-  </div>
+  </button>
 </template>
 <script lang="ts">
 import { mixin as clickaway } from "vue-clickaway";
@@ -111,7 +114,7 @@ export default class AccountDropdown extends Vue {
   }
 
   logout() {
-    this.$store.dispatch("logout");
+    this.$store.dispatch("account/logout");
     this.$router.push("/login");
   }
 }
