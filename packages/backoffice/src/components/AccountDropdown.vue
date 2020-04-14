@@ -48,42 +48,49 @@
       <hr class="block md:hidden text-gray-200 mx-8 mb-2" />
       <div class="flex flex-col">
         <router-link
-          class="flex items-center py-3 px-6 text-gray-700 border-r-4 border-white hover:bg-gray-200 hover:text-primary-600 account-dropdown-link"
-          active-class="text-primary-600 bg-gray-200 border-primary-500"
+          class="group flex items-center py-3 px-6 border-r-4 border-white hover:bg-gray-200 hover:border-gray-200"
+          active-class="bg-gray-200 border-primary-500 hover:border-primary-500"
           v-for="route in accountRoutes"
           :key="route.name"
           :to="route.path"
           :data-cy="`${route.path}-link`"
         >
-          <div
-            v-html="route.metadata.icon"
-            class="account-dropdown-link--icon"
-          />
-          <span class="capitalize ml-4">{{ route.name }}</span>
+          <div class="h-5 w-5">
+            <component
+              class="h-5 w-5 text-gray-600 group-hover:text-primary-500 group-hover:opacity-100"
+              :class="[
+                $route.name === route.name
+                  ? ['opacity-100', 'text-primary-500']
+                  : ['opacity-50', 'text-gray-600']
+              ]"
+              :is="`${route.name}-icon`"
+            />
+          </div>
+          <span
+            class="capitalize ml-4 group-hover:text-primary-600"
+            :class="[
+              $route.name === route.name
+                ? ['text-primary-600']
+                : ['text-gray-700']
+            ]"
+            >{{ route.name }}</span
+          >
         </router-link>
         <a
           @click="logout"
-          class="cursor-pointer flex items-center py-3 px-6 text-gray-700 border-r-4 border-white hover:bg-gray-200 hover:text-primary-600 account-dropdown-link"
+          class="cursor-pointer group flex items-center py-3 px-6 border-r-4 border-white hover:bg-gray-200 hover:border-gray-200"
           data-cy="logout-link"
         >
-          <div class="account-dropdown-link--icon">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-              <polyline points="16 17 21 12 16 7" />
-              <line x1="21" y1="12" x2="9" y2="12" />
-            </svg>
+          <div class="h-5 w-5">
+            <component
+              class="h-5 w-5 text-gray-600 opacity-50 text-gray-600 group-hover:text-primary-500 group-hover:opacity-100"
+              :is="`logout-icon`"
+            />
           </div>
-          <span class="ml-4">Log out</span>
+          <span
+            class="capitalize ml-4 text-gray-700 group-hover:text-primary-600"
+            >Log out</span
+          >
         </a>
       </div>
     </div>
@@ -93,9 +100,17 @@
 import { mixin as clickaway } from "vue-clickaway";
 import { Vue, Component } from "vue-property-decorator";
 import { accountRoutes } from "@/plugins/router";
+import ProfileIcon from "@/assets/img/icons/profile-icon.svg";
+import SettingsIcon from "@/assets/img/icons/settings-icon.svg";
+import LogoutIcon from "@/assets/img/icons/logout-icon.svg";
 
 @Component({
-  mixins: [clickaway]
+  mixins: [clickaway],
+  components: {
+    ProfileIcon,
+    SettingsIcon,
+    LogoutIcon
+  }
 })
 export default class AccountDropdown extends Vue {
   accountRoutes = accountRoutes;
@@ -119,20 +134,3 @@ export default class AccountDropdown extends Vue {
   }
 }
 </script>
-
-<style lang="postcss">
-.account-dropdown-link:hover:not(.router-link-exact-active) {
-  @apply border-gray-200;
-}
-
-.account-dropdown-link--icon > svg {
-  @apply h-5 w-5 text-gray-600 opacity-50;
-}
-
-.account-dropdown-link.router-link-exact-active
-  > .account-dropdown-link--icon
-  > svg,
-.account-dropdown-link:hover > .account-dropdown-link--icon > svg {
-  @apply text-primary-600 opacity-100;
-}
-</style>

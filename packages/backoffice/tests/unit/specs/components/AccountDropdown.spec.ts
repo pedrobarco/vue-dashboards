@@ -1,9 +1,14 @@
-import { shallowMount } from "@vue/test-utils";
+import { shallowMount, createLocalVue } from "@vue/test-utils";
 import Login from "@/components/AccountDropdown.vue";
-import { accountRoutes } from "@/plugins/router";
+import router, { accountRoutes } from "@/plugins/router";
+import VueRouter from "vue-router";
 
 function initWrapper() {
+  const localVue = createLocalVue();
+  localVue.use(VueRouter);
   return shallowMount(Login, {
+    localVue,
+    router,
     mocks: {
       $t: (msg: string) => msg
     }

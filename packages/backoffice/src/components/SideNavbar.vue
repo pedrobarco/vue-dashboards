@@ -12,17 +12,34 @@
     </div>
     <div class="flex flex-col mt-32 lg:mt-24">
       <router-link
-        class="flex items-center justify-center lg:justify-start py-3 px-6 mb-4 text-gray-700 border-r-4 border-white hover:bg-gray-200 side-navbar-link"
-        active-class="text-primary-600 bg-gray-200 border-primary-500"
+        class="group flex items-center justify-center lg:justify-start py-3 px-6 mb-4 border-r-4 border-white hover:bg-gray-200 hover:border-gray-200"
+        active-class="bg-gray-200 border-primary-500 hover:border-primary-500"
         v-for="route in appRoutes"
         :key="route.name"
         :to="route.path"
         :data-cy="`side-${route.path}-link`"
       >
-        <div v-html="route.metadata.icon" class="side-navbar-link--icon" />
-        <span class="hidden lg:block capitalize ml-4 font-medium">{{
-          route.name
-        }}</span>
+        <div class="h-5 w-5">
+          <component
+            class="h-5 w-5 text-gray-600 group-hover:text-primary-500 group-hover:opacity-100"
+            :class="[
+              $route.name === route.name
+                ? ['opacity-100', 'text-primary-500']
+                : ['opacity-50', 'text-gray-600']
+            ]"
+            :is="`${route.name}-icon`"
+          />
+        </div>
+        <span
+          class="hidden lg:block capitalize ml-4 font-medium group-hover:text-primary-600"
+          :class="[
+            $route.name === route.name
+              ? ['text-primary-600']
+              : ['text-gray-700']
+          ]"
+        >
+          {{ route.name }}
+        </span>
       </router-link>
     </div>
   </nav>
@@ -31,24 +48,20 @@
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
 import { appRoutes } from "@/plugins/router";
+import DashboardIcon from "@/assets/img/icons/dashboard-icon.svg";
+import SalesIcon from "@/assets/img/icons/sales-icon.svg";
+import ProductsIcon from "@/assets/img/icons/products-icon.svg";
+import ClientsIcon from "@/assets/img/icons/clients-icon.svg";
 
-@Component
+@Component({
+  components: {
+    DashboardIcon,
+    SalesIcon,
+    ProductsIcon,
+    ClientsIcon
+  }
+})
 export default class SideNavbar extends Vue {
   appRoutes = appRoutes;
 }
 </script>
-
-<style lang="postcss">
-.side-navbar-link:hover:not(.router-link-exact-active) {
-  @apply border-gray-200 text-primary-600;
-}
-
-.side-navbar-link--icon > svg {
-  @apply h-5 w-5 text-gray-600 opacity-50;
-}
-
-.side-navbar-link.router-link-exact-active > .side-navbar-link--icon > svg,
-.side-navbar-link:hover > .side-navbar-link--icon > svg {
-  @apply text-primary-600 opacity-100;
-}
-</style>

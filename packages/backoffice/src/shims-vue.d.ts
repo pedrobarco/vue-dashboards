@@ -5,3 +5,8 @@ declare module "*.vue" {
 
 declare module "tailwindcss";
 declare module "vue-clickaway";
+declare module "*.svg" {
+  import Vue, { VueConstructor } from "vue";
+  const content: VueConstructor<Vue>;
+  export default content;
+}

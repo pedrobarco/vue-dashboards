@@ -30,6 +30,9 @@ module.exports = {
       }
     }
   },
-  variants: {},
+  variants: {
+    textColor: ["group-hover"],
+    opacity: ["group-hover"]
+  },
   plugins: []
 };
