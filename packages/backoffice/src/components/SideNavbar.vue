@@ -29,7 +29,7 @@
           :is="`${route.metadata.icon}-icon`"
         />
         <span
-          class="hidden lg:block capitalize ml-4 font-medium group-hover:text-primary-600"
+          class="hidden lg:block ml-4 capitalize font-medium group-hover:text-primary-600 "
           :class="[
             $route.name === route.name
               ? ['text-primary-600']

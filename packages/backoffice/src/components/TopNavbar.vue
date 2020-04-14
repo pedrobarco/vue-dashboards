@@ -1,7 +1,9 @@
 <template>
   <div class="flex flex-row justify-between mx-12 my-8 md:mb-0">
     <div class="">
-      <h1 class="capitalize text-2xl md:text-3xl font-medium">
+      <h1
+        class="capitalize text-2xl md:text-3xl font-semibold text-primary-700"
+      >
         {{ $route.name }}
       </h1>
     </div>

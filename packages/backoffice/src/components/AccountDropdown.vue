@@ -15,8 +15,8 @@
           alt
         />
       </div>
-      <div class="hidden md:flex flex-col text-gray-800 text-left ml-2">
-        <span class="font-medium">Jack Finnigan</span>
+      <div class="hidden md:flex flex-col text-left ml-2">
+        <span class="text-gray-800 font-medium">Jack Finnigan</span>
         <span class="text-sm text-gray-700 opacity-50 -mt-1">Super Admin</span>
       </div>
       <div class="md:ml-2">
@@ -41,14 +41,14 @@
       class="absolute right-0 mt-2 py-3 w-48 bg-white rounded-md shadow"
       data-cy="account-dropdown--dropdown"
     >
-      <div class="md:hidden flex flex-col text-gray-800 text-left ml-6 mb-4">
-        <span class="font-medium">Jack Finnigan</span>
+      <div class="md:hidden flex flex-col text-left ml-6 mb-4">
+        <span class="text-gray-800 font-medium">Jack Finnigan</span>
         <span class="text-sm text-gray-700 opacity-50 -mt-1">Super Admin</span>
       </div>
       <hr class="block md:hidden text-gray-200 mx-8 mb-2" />
       <div class="flex flex-col">
         <router-link
-          class="group flex items-center py-3 px-6 border-r-4 border-white hover:bg-gray-200 hover:border-gray-200"
+          class="group flex items-center py-3 border-r-4 border-white hover:bg-gray-200 hover:border-gray-200"
           active-class="bg-gray-200 border-primary-500 hover:border-primary-500"
           v-for="route in accountRoutes"
           :key="route.name"
@@ -56,7 +56,7 @@
           :data-cy="`${route.path}-link`"
         >
           <component
-            class="h-5 w-5 md:h-6 w-6 text-gray-600 group-hover:text-primary-500 group-hover:opacity-100"
+            class="ml-4 h-5 w-5 text-gray-600 group-hover:text-primary-500 group-hover:opacity-100"
             :class="[
               $route.name === route.name
                 ? ['opacity-100', 'text-primary-500']
@@ -65,7 +65,7 @@
             :is="`${route.metadata.icon}-icon`"
           />
           <span
-            class="capitalize ml-4 group-hover:text-primary-600"
+            class="capitalize ml-4 font-medium group-hover:text-primary-600"
             :class="[
               $route.name === route.name
                 ? ['text-primary-600']
@@ -76,15 +76,15 @@
         </router-link>
         <a
           @click="logout"
-          class="cursor-pointer group flex items-center py-3 px-6 border-r-4 border-white hover:bg-gray-200 hover:border-gray-200"
+          class="cursor-pointer group flex items-center py-3 border-r-4 border-white hover:bg-gray-200 hover:border-gray-200"
           data-cy="logout-link"
         >
           <logout-icon
-            class="h-5 w-5 text-gray-600 opacity-50 text-gray-60 group-hover:text-primary-500 group-hover:opacity-100"
+            class="ml-4 h-5 w-5 text-gray-600 opacity-50 text-gray-60 group-hover:text-primary-500 group-hover:opacity-100"
           />
           <span
-            class="capitalize ml-4 text-gray-700 group-hover:text-primary-600"
-            >Log out</span
+            class="capitalize ml-4 font-medium text-gray-700 group-hover:text-primary-600"
+            >Logout</span
           >
         </a>
       </div>
