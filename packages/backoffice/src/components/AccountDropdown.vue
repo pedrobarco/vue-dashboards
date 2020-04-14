@@ -55,17 +55,15 @@
           :to="route.path"
           :data-cy="`${route.path}-link`"
         >
-          <div class="h-5 w-5">
-            <component
-              class="h-5 w-5 text-gray-600 group-hover:text-primary-500 group-hover:opacity-100"
-              :class="[
-                $route.name === route.name
-                  ? ['opacity-100', 'text-primary-500']
-                  : ['opacity-50', 'text-gray-600']
-              ]"
-              :is="`${route.name}-icon`"
-            />
-          </div>
+          <component
+            class="h-5 w-5 md:h-6 w-6 text-gray-600 group-hover:text-primary-500 group-hover:opacity-100"
+            :class="[
+              $route.name === route.name
+                ? ['opacity-100', 'text-primary-500']
+                : ['opacity-50', 'text-gray-600']
+            ]"
+            :is="`${route.metadata.icon}-icon`"
+          />
           <span
             class="capitalize ml-4 group-hover:text-primary-600"
             :class="[
@@ -81,12 +79,9 @@
           class="cursor-pointer group flex items-center py-3 px-6 border-r-4 border-white hover:bg-gray-200 hover:border-gray-200"
           data-cy="logout-link"
         >
-          <div class="h-5 w-5">
-            <component
-              class="h-5 w-5 text-gray-600 opacity-50 text-gray-600 group-hover:text-primary-500 group-hover:opacity-100"
-              :is="`logout-icon`"
-            />
-          </div>
+          <logout-icon
+            class="h-5 w-5 text-gray-600 opacity-50 text-gray-60 group-hover:text-primary-500 group-hover:opacity-100"
+          />
           <span
             class="capitalize ml-4 text-gray-700 group-hover:text-primary-600"
             >Log out</span
@@ -100,14 +95,14 @@
 import { mixin as clickaway } from "vue-clickaway";
 import { Vue, Component } from "vue-property-decorator";
 import { accountRoutes } from "@/plugins/router";
-import ProfileIcon from "@/assets/img/icons/profile-icon.svg";
-import SettingsIcon from "@/assets/img/icons/settings-icon.svg";
-import LogoutIcon from "@/assets/img/icons/logout-icon.svg";
+import UserIcon from "@/assets/img/icons/user.svg";
+import SettingsIcon from "@/assets/img/icons/settings.svg";
+import LogoutIcon from "@/assets/img/icons/logout.svg";
 
 @Component({
   mixins: [clickaway],
   components: {
-    ProfileIcon,
+    UserIcon,
     SettingsIcon,
     LogoutIcon
   }

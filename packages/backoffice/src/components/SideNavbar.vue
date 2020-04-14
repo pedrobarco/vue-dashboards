@@ -12,24 +12,22 @@
     </div>
     <div class="flex flex-col mt-32 lg:mt-24">
       <router-link
-        class="group flex items-center justify-center lg:justify-start py-3 px-6 mb-4 border-r-4 border-white hover:bg-gray-200 hover:border-gray-200"
+        class="group flex items-center justify-center lg:justify-start py-3 lg:px-6 mb-4 border-r-4 border-white hover:bg-gray-200 hover:border-gray-200"
         active-class="bg-gray-200 border-primary-500 hover:border-primary-500"
         v-for="route in appRoutes"
         :key="route.name"
         :to="route.path"
         :data-cy="`side-${route.path}-link`"
       >
-        <div class="h-5 w-5">
-          <component
-            class="h-5 w-5 text-gray-600 group-hover:text-primary-500 group-hover:opacity-100"
-            :class="[
-              $route.name === route.name
-                ? ['opacity-100', 'text-primary-500']
-                : ['opacity-50', 'text-gray-600']
-            ]"
-            :is="`${route.name}-icon`"
-          />
-        </div>
+        <component
+          class="h-5 w-5 text-gray-600 group-hover:text-primary-500 group-hover:opacity-100"
+          :class="[
+            $route.name === route.name
+              ? ['opacity-100', 'text-primary-500']
+              : ['opacity-50', 'text-gray-600']
+          ]"
+          :is="`${route.metadata.icon}-icon`"
+        />
         <span
           class="hidden lg:block capitalize ml-4 font-medium group-hover:text-primary-600"
           :class="[
@@ -48,17 +46,17 @@
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
 import { appRoutes } from "@/plugins/router";
-import DashboardIcon from "@/assets/img/icons/dashboard-icon.svg";
-import SalesIcon from "@/assets/img/icons/sales-icon.svg";
-import ProductsIcon from "@/assets/img/icons/products-icon.svg";
-import ClientsIcon from "@/assets/img/icons/clients-icon.svg";
+import PieChartIcon from "@/assets/img/icons/pie-chart.svg";
+import ShoppingBagIcon from "@/assets/img/icons/shopping-bag.svg";
+import PackageIcon from "@/assets/img/icons/package.svg";
+import UsersIcon from "@/assets/img/icons/users.svg";
 
 @Component({
   components: {
-    DashboardIcon,
-    SalesIcon,
-    ProductsIcon,
-    ClientsIcon
+    PieChartIcon,
+    ShoppingBagIcon,
+    PackageIcon,
+    UsersIcon
   }
 })
 export default class SideNavbar extends Vue {
