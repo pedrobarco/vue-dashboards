@@ -1,4 +1,4 @@
-openapi: 3.0.2
+openapi: 3.0.3
 servers:
   - url: http://localhost:{port}/api
     description: Localhost server
@@ -15,26 +15,198 @@ servers:
 info:
   title: Dash API
   version: "1.0.0"
-  description: API para usar no DashBoard
+  description: Node.js API for business statistics featuring backoffice user management
 components:
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT
+  schemas:
+    Error:
+      type: object
+      properties:
+        status:
+          type: integer
+        title:
+          type: string
+        detail:
+          type: string
+      required:
+        - status
+        - title
+        - detail
   responses:
-    UnauthorizedError:
-      description: Token em falta ou invalido
+    BadRequest:
+      description: This is a generic error.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            status: 400
+            title: Bad Request
+            detail: This is a generic error.
+    InvalidAction:
+      description: The action requested was not valid for this resource.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            status: 400
+            title: Invalid Action
+            detail: The action requested was not valid for this resource.
+    InvalidResource:
+      description: The resource submitted could not be validated.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            status: 400
+            title: Invalid Resource
+            detail: The resource submitted could not be validated.
+    JsonParseError:
+      description: We encountered an unspecified JSON parsing error.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            status: 400
+            title: JSON Parse Error
+            detail: We encountered an unspecified JSON parsing error.
+    TokenMissing:
+      description: Token has not yet been provided.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            status: 401
+            title: Token Missing
+            detail: Token has not yet been provided.
+    TokenInvalid:
+      description: Your token is invalid.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            status: 401
+            title: Token Invalid
+            detail: Your token is invalid.
+    TokenExpired:
+      description: Your token has expired.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            status: 401
+            title: Token Expired
+            detail: Your token has expired.
+    Forbidden:
+      description: You are not permitted to access this resource.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            status: 403
+            title: Forbidden
+            detail: Your token has expired.
+    UserDisabled:
+      description: This account has been disabled.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            status: 403
+            title: User Disabled
+            detail: This account has been disabled.
+    ResourceNotFound:
+      description: The requested resource could not be found.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            status: 404
+            title: Resource Not Found
+            detail: The requested resource could not be found.
+    MethodNotAllowed:
+      description: The requested method and resource are not compatible.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            status: 405
+            title: Resource Not Found
+            detail: The requested method and resource are not compatible. See the Allow header for this resource's available methods.
+    ResourceNestingTooDeep:
+      description: The sub-resource requested is nested too deeply.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            status: 414
+            title: Resource Nesting Too Deep
+            detail: The sub-resource requested is nested too deeply.
+    RequestedFieldsInvalid:
+      description: The fields requested from this resource are invalid.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            status: 422
+            title: Requested Fields Invalid
+            detail: The fields requested from this resource are invalid.
+    TooManyRequests:
+      description: You have exceeded the limit of simultaneous connections.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            status: 429
+            title: Too Many Requests
+            detail: You have exceeded the limit of simultaneous connections.
+    InternalServerError:
+      description: An unexpected internal error has occurred.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            status: 500
+            title: Internal Server Error
+            detail: An unexpected internal error has occurred. Please contact Support for more information.
+    ComplianceRelated:
+      description: This method has been disabled.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            status: 503
+            title: Compliance Related
+            detail: This method has been disabled.
 security:
-  - bearerAuth: ["OAuth2"]
+  - bearerAuth: []
 paths:
   /users:
     get:
-      summary: Lista utilizadores
-      description: Lista de todos os utilizadores
+      summary: Get all users
+      description: Lists all users, in the order that they signed up.
       responses:
         200:
-          description: Sucesso
+          description: Success
           content:
             application/json:
               schema:
@@ -59,7 +231,7 @@ paths:
                       type: boolean
                       example: 1
         401:
-          $ref: '#/components/responses/UnauthorizedError'
+          $ref: "#/components/responses/TokenMissing"
   /vendas/statis:
     get:
       summary: Estatistica de vendas
@@ -85,7 +257,7 @@ paths:
                       type: number
                       example: 8873,90
         401:
-          $ref: '#/components/responses/UnauthorizedError'              
+          $ref: "#/components/responses/TokenMissing"
   /vendas/artigos/{cliente}:
     get:
       summary: Estatistica de vendas
@@ -119,7 +291,7 @@ paths:
                       type: integer
                       example: 300
         401:
-          $ref: '#/components/responses/UnauthorizedError'
+          $ref: "#/components/responses/TokenMissing"
   /vendas/artigos/stock/{artigo}:
     get:
       summary: Stock Artigo X
@@ -151,4 +323,4 @@ paths:
                       type: integer
                       example: 300
         401:
-          $ref: '#/components/responses/UnauthorizedError'
+          $ref: "#/components/responses/TokenMissing"
