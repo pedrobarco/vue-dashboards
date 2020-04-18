@@ -1,14 +1,29 @@
 <template>
-  <div>
-    <h1 class="text-5xl font-bold text-center text-gray-700">App Layout</h1>
-    <div class="container">
-      <router-view />
+  <div class="flex h-screen bg-gray-100">
+    <SideNavbar class="hidden md:block" />
+    <div class="flex-1 flex flex-col">
+      <TopNavbar />
+      <!-- Content -->
+      <main class="h-full mb-8 md:my-8 mx-12 border-dotted border-4">
+        <router-view />
+      </main>
+      <BottomNavbar class="md:hidden" />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Vue } from "vue-property-decorator";
+import { Vue, Component } from "vue-property-decorator";
+import SideNavbar from "@/components/SideNavbar.vue";
+import TopNavbar from "@/components/TopNavbar.vue";
+import BottomNavbar from "@/components/BottomNavbar.vue";
 
-export default class Private extends Vue {}
+@Component({
+  components: {
+    SideNavbar,
+    TopNavbar,
+    BottomNavbar
+  }
+})
+export default class AppLayout extends Vue {}
 </script>

@@ -1,5 +1,8 @@
 module.exports = {
   theme: {
+    fontFamily: {
+      sans: ["Fira Sans"]
+    },
     extend: {
       colors: {
         primary: {
@@ -27,6 +30,9 @@ module.exports = {
       }
     }
   },
-  variants: {},
+  variants: {
+    textColor: ["group-hover"],
+    opacity: ["group-hover"]
+  },
   plugins: []
 };

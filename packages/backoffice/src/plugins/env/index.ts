@@ -7,9 +7,9 @@ export const env = {
   },
   app: {
     admin: {
-      email: process.env.VUE_APP_ADMIN_EMAIL || "admin@admin",
-      password: process.env.VUE_APP_ADMIN_PASSWORD || "admin",
-      token: process.env.VUE_APP_ADMIN_TOKEN || "admin-token"
+      email: process.env.VUE_APP_ADMIN_EMAIL || null,
+      password: process.env.VUE_APP_ADMIN_PASSWORD || null,
+      token: process.env.VUE_APP_ADMIN_TOKEN || null
     }
   },
   i18n: {
