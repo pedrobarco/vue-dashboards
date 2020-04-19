@@ -36,6 +36,88 @@ components:
         - status
         - title
         - detail
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+          writeOnly: true
+        salt:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        isDisabled:
+          type: boolean
+          default: true
+        isAdmin:
+          type: boolean
+          default: false
+      required:
+        - email
+        - password
+        - firstName
+        - lastName
+    Client:
+      type: object
+      properties:
+        id:
+          type: string
+        address:
+          type: string
+        postalCode:
+          type: string
+        city:
+          type: string
+        country:
+          type: string
+        tin:
+          type: integer
+    Item:
+      type: object
+      properties:
+        id:
+          type: string
+        description:
+          type: string
+        barCode:
+          type: string
+        vat:
+          type: number
+          format: double
+          minimum: 0
+          maximum: 99
+        discount:
+          type: number
+          format: double
+          minimum: 0
+          maximum: 99
+        supplier:
+          type: string
+    Warehouse:
+      type: object
+      properties:
+        id:
+          type: string
+        description:
+          type: string
+        address:
+          type: string
+        postalCode:
+          type: string
+        city:
+          type: string
+        country:
+          type: string
   responses:
     BadRequest:
       description: Bad Request
@@ -192,8 +274,8 @@ security:
 paths:
   /users:
     get:
-      summary: Get all users
-      description: Lists all users, in the order that they signed up.
+      description: Returns all users from the system that the user has access to.
+      operationId: findUsers
       responses:
         200:
           description: Success
@@ -201,25 +283,66 @@ paths:
             application/json:
               schema:
                 type: array
-                maxItems: 25
-                minItems: 1
                 items:
-                  properties:
-                    codigo:
-                      type: string
-                      example: utilizador
-                    nome:
-                      type: string
-                      example: Paulo Rodrigues
-                    email:
-                      type: string
-                      example: ash@to.me
-                    activo:
-                      type: boolean
-                      example: 1
-                    administrador:
-                      type: boolean
-                      example: 1
+                  $ref: "#/components/schemas/User"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+  /users/{id}:
+    get:
+      description: Finds a user based on a single ID.
+      operationId: findUserById
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+  /clients:
+    get:
+      description: Returns all clients from the system that the user has access to.
+      operationId: findUsers
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Client"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+  /items:
+    get:
+      description: Returns all items from the system that the user has access to.
+      operationId: findItems
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Item"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+  /warehouses:
+    get:
+      description: Returns all warehouses from the system that the user has access to.
+      operationId: findWarehouses
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Warehouse"
         401:
           $ref: "#/components/responses/Unauthorized"
   /vendas/statis:
