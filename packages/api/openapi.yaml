@@ -119,7 +119,7 @@ components:
         country:
           type: string
   responses:
-    BadRequest:
+    400BadRequest:
       description: Bad Request
       content:
         application/json:
@@ -146,7 +146,7 @@ components:
                 status: 400
                 title: JSON Parse Error
                 detail: We encountered an unspecified JSON parsing error
-    Unauthorized:
+    401Unauthorized:
       description: Unauthorized
       content:
         application/json:
@@ -168,7 +168,7 @@ components:
                 status: 401
                 title: Token Expired
                 detail: Your token has expire
-    Forbidden:
+    403Forbidden:
       description: Forbidden
       content:
         application/json:
@@ -185,7 +185,7 @@ components:
                 status: 403
                 title: User Disabled
                 detail: This account has been disabled.
-    NotFound:
+    404NotFound:
       description: Not Found
       content:
         application/json:
@@ -197,7 +197,7 @@ components:
                 status: 404
                 title: Resource Not Found
                 detail: The requested resource could not be found
-    MethodNotAllowed:
+    405MethodNotAllowed:
       description: Method Not Allowed
       content:
         application/json:
@@ -209,8 +209,8 @@ components:
                 status: 405
                 title: Resource Not Found
                 detail: The requested method and resource are not compatible. See the Allow header for this resource's available methods.
-    UriTooLong:
-      description: URI Too Long
+    414RequestUriTooLong:
+      description: Request-URI Too Long
       content:
         application/json:
           schema:
@@ -221,19 +221,7 @@ components:
                 status: 414
                 title: Resource Nesting Too Deep
                 detail: The sub-resource requested is nested too deeply.
-    UnprocessableEntity:
-      description: Unprocessable Entity
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/Error"
-          examples:
-            RequestedFieldsInvalid:
-              value:
-                status: 422
-                title: Requested Fields Invalid
-                detail: The fields requested from this resource are invalid
-    TooManyRequests:
+    429TooManyRequests:
       description: Too Many Requests
       content:
         application/json:
@@ -245,7 +233,7 @@ components:
                 status: 429
                 title: Too Many Requests
                 detail: You have exceeded the limit of simultaneous connections
-    InternalServerError:
+    500InternalServerError:
       description: Internal Server Error
       content:
         application/json:
@@ -257,7 +245,19 @@ components:
                 status: 500
                 title: Internal Server Error
                 detail: An unexpected internal error has occurred. Please contact Support for more information.
-    ServiceUnavailable:
+    501NotImplemented:
+      description: Not Implemented
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          examples:
+            InternalServerError:
+              value:
+                status: 501
+                title: Not Implemented Error
+                detail: The server does not support the functionality required to fulfill the request.
+    503ServiceUnavailable:
       description: Service Unavailable
       content:
         application/json:
@@ -274,9 +274,25 @@ security:
 paths:
   /users:
     get:
-      description: Returns all users from the system that the user has access to.
+      description: Returns all users.
       operationId: findUsers
       responses:
+        400:
+          $ref: "#/components/responses/400BadRequest"
+        401:
+          $ref: "#/components/responses/401Unauthorized"
+        403:
+          $ref: "#/components/responses/403Forbidden"
+        414:
+          $ref: "#/components/responses/414RequestUriTooLong"
+        429:
+          $ref: "#/components/responses/429TooManyRequests"
+        500:
+          $ref: "#/components/responses/500InternalServerError"
+        501:
+          $ref: "#/components/responses/501NotImplemented"
+        503:
+          $ref: "#/components/responses/503ServiceUnavailable"
         200:
           description: Success
           content:
@@ -285,26 +301,56 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/User"
-        401:
-          $ref: "#/components/responses/Unauthorized"
   /users/{id}:
     get:
-      description: Finds a user based on a single ID.
+      description: Finds a user by its ID.
       operationId: findUserById
       responses:
+        400:
+          $ref: "#/components/responses/400BadRequest"
+        401:
+          $ref: "#/components/responses/401Unauthorized"
+        403:
+          $ref: "#/components/responses/403Forbidden"
+        404:
+          $ref: "#/components/responses/404NotFound"
+        414:
+          $ref: "#/components/responses/414RequestUriTooLong"
+        429:
+          $ref: "#/components/responses/429TooManyRequests"
+        500:
+          $ref: "#/components/responses/500InternalServerError"
+        501:
+          $ref: "#/components/responses/501NotImplemented"
+        503:
+          $ref: "#/components/responses/503ServiceUnavailable"
         200:
           description: Success
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/User"
-        401:
-          $ref: "#/components/responses/Unauthorized"
   /clients:
     get:
-      description: Returns all clients from the system that the user has access to.
-      operationId: findUsers
+      description: Returns all clients.
+      operationId: findClients
       responses:
+        400:
+          $ref: "#/components/responses/400BadRequest"
+        401:
+          $ref: "#/components/responses/401Unauthorized"
+        403:
+          $ref: "#/components/responses/403Forbidden"
+        414:
+          $ref: "#/components/responses/414RequestUriTooLong"
+        429:
+          $ref: "#/components/responses/429TooManyRequests"
+        500:
+          $ref: "#/components/responses/500InternalServerError"
+        501:
+          $ref: "#/components/responses/501NotImplemented"
+        503:
+          $ref: "#/components/responses/503ServiceUnavailable"
         200:
           description: Success
           content:
@@ -313,13 +359,56 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Client"
+  /clients/{id}:
+    get:
+      description: Finds a client by its ID.
+      operationId: findClientById
+      responses:
+        400:
+          $ref: "#/components/responses/400BadRequest"
         401:
-          $ref: "#/components/responses/Unauthorized"
+          $ref: "#/components/responses/401Unauthorized"
+        403:
+          $ref: "#/components/responses/403Forbidden"
+        404:
+          $ref: "#/components/responses/404NotFound"
+        414:
+          $ref: "#/components/responses/414RequestUriTooLong"
+        429:
+          $ref: "#/components/responses/429TooManyRequests"
+        500:
+          $ref: "#/components/responses/500InternalServerError"
+        501:
+          $ref: "#/components/responses/501NotImplemented"
+        503:
+          $ref: "#/components/responses/503ServiceUnavailable"
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Client"
   /items:
     get:
-      description: Returns all items from the system that the user has access to.
+      description: Returns all items.
       operationId: findItems
       responses:
+        400:
+          $ref: "#/components/responses/400BadRequest"
+        401:
+          $ref: "#/components/responses/401Unauthorized"
+        403:
+          $ref: "#/components/responses/403Forbidden"
+        414:
+          $ref: "#/components/responses/414RequestUriTooLong"
+        429:
+          $ref: "#/components/responses/429TooManyRequests"
+        500:
+          $ref: "#/components/responses/500InternalServerError"
+        501:
+          $ref: "#/components/responses/501NotImplemented"
+        503:
+          $ref: "#/components/responses/503ServiceUnavailable"
         200:
           description: Success
           content:
@@ -328,13 +417,56 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Item"
+  /items/{id}:
+    get:
+      description: Finds an item by its ID.
+      operationId: findItemById
+      responses:
+        400:
+          $ref: "#/components/responses/400BadRequest"
         401:
-          $ref: "#/components/responses/Unauthorized"
+          $ref: "#/components/responses/401Unauthorized"
+        403:
+          $ref: "#/components/responses/403Forbidden"
+        404:
+          $ref: "#/components/responses/404NotFound"
+        414:
+          $ref: "#/components/responses/414RequestUriTooLong"
+        429:
+          $ref: "#/components/responses/429TooManyRequests"
+        500:
+          $ref: "#/components/responses/500InternalServerError"
+        501:
+          $ref: "#/components/responses/501NotImplemented"
+        503:
+          $ref: "#/components/responses/503ServiceUnavailable"
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Item"
   /warehouses:
     get:
-      description: Returns all warehouses from the system that the user has access to.
+      description: Returns all warehouses.
       operationId: findWarehouses
       responses:
+        400:
+          $ref: "#/components/responses/400BadRequest"
+        401:
+          $ref: "#/components/responses/401Unauthorized"
+        403:
+          $ref: "#/components/responses/403Forbidden"
+        414:
+          $ref: "#/components/responses/414RequestUriTooLong"
+        429:
+          $ref: "#/components/responses/429TooManyRequests"
+        500:
+          $ref: "#/components/responses/500InternalServerError"
+        501:
+          $ref: "#/components/responses/501NotImplemented"
+        503:
+          $ref: "#/components/responses/503ServiceUnavailable"
         200:
           description: Success
           content:
@@ -343,97 +475,32 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Warehouse"
-        401:
-          $ref: "#/components/responses/Unauthorized"
-  /vendas/statis:
+  /warehouses/{id}:
     get:
-      summary: Estatistica de vendas
-      description: Top 5 clientes com mais vendas
+      description: Finds a warehouse by its ID.
+      operationId: findWarehouseById
       responses:
+        400:
+          $ref: "#/components/responses/400BadRequest"
+        401:
+          $ref: "#/components/responses/401Unauthorized"
+        403:
+          $ref: "#/components/responses/403Forbidden"
+        404:
+          $ref: "#/components/responses/404NotFound"
+        414:
+          $ref: "#/components/responses/414RequestUriTooLong"
+        429:
+          $ref: "#/components/responses/429TooManyRequests"
+        500:
+          $ref: "#/components/responses/500InternalServerError"
+        501:
+          $ref: "#/components/responses/501NotImplemented"
+        503:
+          $ref: "#/components/responses/503ServiceUnavailable"
         200:
-          description: Sucesso
+          description: Success
           content:
             application/json:
               schema:
-                maxItems: 5
-                minItems: 1
-                type: array
-                items:
-                  properties:
-                    entidade:
-                      type: string
-                      example: 10Xpto
-                    nome:
-                      type: string
-                      example: Inforshow
-                    totalmerc:
-                      type: number
-                      example: 8873,90
-        401:
-          $ref: "#/components/responses/Unauthorized"
-  /vendas/artigos/{cliente}:
-    get:
-      summary: Estatistica de vendas
-      description: Obter lista top 5 artigos vendidos pelo cliente especifico
-      parameters:
-        - in: path
-          name: cliente
-          required: true
-          description: o codigo do cliente, não o nome.
-          schema:
-            type: string
-            example: 10Xpto
-      responses:
-        200:
-          description: Sucesso
-          content:
-            application/json:
-              schema:
-                maxItems: 5
-                minItems: 1
-                type: array
-                items:
-                  properties:
-                    artigo:
-                      type: string
-                      example: A0005
-                    descricao:
-                      type: string
-                      example: Mesa p/ PC
-                    quantidade:
-                      type: integer
-                      example: 300
-        401:
-          $ref: "#/components/responses/Unauthorized"
-  /vendas/artigos/stock/{artigo}:
-    get:
-      summary: Stock Artigo X
-      description: Obter valor do stock actual do artigo selecionado
-      parameters:
-        - in: path
-          name: artigo
-          required: true
-          description: o codigo do artigo, não a descricao.
-          schema:
-            type: string
-            example: A0005
-      responses:
-        200:
-          description: Sucesso
-          content:
-            application/json:
-              schema:
-                maxItems: 1
-                items:
-                  properties:
-                    artigo:
-                      type: string
-                      example: A0005
-                    descricao:
-                      type: string
-                      example: Mesa p/ PC
-                    quantidade:
-                      type: integer
-                      example: 300
-        401:
-          $ref: "#/components/responses/Unauthorized"
+                $ref: "#/components/schemas/Warehouse"
