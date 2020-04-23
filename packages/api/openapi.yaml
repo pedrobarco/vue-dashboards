@@ -259,17 +259,17 @@ components:
                 detail: This method has been disabled
   parameters:
     offsetParam:
+      name: offset
       description: The number of items to skip before starting to collect the result set.
       in: query
-      name: offset
       required: false
       schema:
         type: integer
         minimum: 0
     limitParam:
+      name: limit
       description: The numbers of items to return.
       in: query
-      name: limit
       required: false
       schema:
         type: integer
@@ -286,6 +286,11 @@ paths:
       parameters:
         - $ref: "#/components/parameters/offsetParam"
         - $ref: "#/components/parameters/limitParam"
+        - name: isAdmin
+          description: Filter only admin users.
+          in: query
+          schema:
+            type: boolean
       responses:
         400:
           $ref: "#/components/responses/400BadRequest"
