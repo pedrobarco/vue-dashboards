@@ -197,18 +197,6 @@ components:
                 status: 404
                 title: Resource Not Found
                 detail: The requested resource could not be found
-    405MethodNotAllowed:
-      description: Method Not Allowed
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/Error"
-          examples:
-            MethodNotAllowed:
-              value:
-                status: 405
-                title: Resource Not Found
-                detail: The requested method and resource are not compatible. See the Allow header for this resource's available methods.
     414RequestUriTooLong:
       description: Request-URI Too Long
       content:
@@ -269,13 +257,35 @@ components:
                 status: 503
                 title: Compliance Related
                 detail: This method has been disabled
+  parameters:
+    offsetParam:
+      description: The number of items to skip before starting to collect the result set.
+      in: query
+      name: offset
+      required: false
+      schema:
+        type: integer
+        minimum: 0
+    limitParam:
+      description: The numbers of items to return.
+      in: query
+      name: limit
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 50
+        default: 20
 security:
   - bearerAuth: []
 paths:
   /users:
     get:
       description: Returns all users.
-      operationId: findUsers
+      operationId: getUsers
+      parameters:
+        - $ref: "#/components/parameters/offsetParam"
+        - $ref: "#/components/parameters/limitParam"
       responses:
         400:
           $ref: "#/components/responses/400BadRequest"
@@ -301,10 +311,63 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/User"
+    post:
+      description: Creates a user and returns the user ID
+      operationId: createUser
+      requestBody:
+        required: true
+        description: A JSON object that contains the user required fields.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      responses:
+        400:
+          $ref: "#/components/responses/400BadRequest"
+        401:
+          $ref: "#/components/responses/401Unauthorized"
+        403:
+          $ref: "#/components/responses/403Forbidden"
+        414:
+          $ref: "#/components/responses/414RequestUriTooLong"
+        429:
+          $ref: "#/components/responses/429TooManyRequests"
+        500:
+          $ref: "#/components/responses/500InternalServerError"
+        501:
+          $ref: "#/components/responses/501NotImplemented"
+        503:
+          $ref: "#/components/responses/503ServiceUnavailable"
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    description: ID of the created user.
+          links:
+            GetUserByUserId:
+              operationId: getUser
+              parameters:
+                userId: "$response.body#/id"
+              description: |
+                The `id` value returned in the response can be used as
+                the `id` parameter in `GET /users/{id}`.
   /users/{id}:
     get:
       description: Finds a user by its ID.
-      operationId: findUserById
+      operationId: getUser
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
       responses:
         400:
           $ref: "#/components/responses/400BadRequest"
@@ -330,10 +393,70 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/User"
+    patch:
+      description: Updates a user by its ID.
+      operationId: updateUser
+      requestBody:
+        required: true
+        description: A JSON object that contains the user required fields.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      responses:
+        400:
+          $ref: "#/components/responses/400BadRequest"
+        401:
+          $ref: "#/components/responses/401Unauthorized"
+        403:
+          $ref: "#/components/responses/403Forbidden"
+        414:
+          $ref: "#/components/responses/414RequestUriTooLong"
+        429:
+          $ref: "#/components/responses/429TooManyRequests"
+        500:
+          $ref: "#/components/responses/500InternalServerError"
+        501:
+          $ref: "#/components/responses/501NotImplemented"
+        503:
+          $ref: "#/components/responses/503ServiceUnavailable"
+        204:
+          description: No Content
+    delete:
+      description: Deletes a user by its ID.
+      operationId: deleteUser
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        400:
+          $ref: "#/components/responses/400BadRequest"
+        401:
+          $ref: "#/components/responses/401Unauthorized"
+        403:
+          $ref: "#/components/responses/403Forbidden"
+        404:
+          $ref: "#/components/responses/404NotFound"
+        414:
+          $ref: "#/components/responses/414RequestUriTooLong"
+        429:
+          $ref: "#/components/responses/429TooManyRequests"
+        500:
+          $ref: "#/components/responses/500InternalServerError"
+        501:
+          $ref: "#/components/responses/501NotImplemented"
+        503:
+          $ref: "#/components/responses/503ServiceUnavailable"
+        204:
+          description: No Content
   /clients:
     get:
       description: Returns all clients.
-      operationId: findClients
+      operationId: getClients
       responses:
         400:
           $ref: "#/components/responses/400BadRequest"
@@ -362,7 +485,13 @@ paths:
   /clients/{id}:
     get:
       description: Finds a client by its ID.
-      operationId: findClientById
+      operationId: getClient
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
       responses:
         400:
           $ref: "#/components/responses/400BadRequest"
@@ -391,7 +520,10 @@ paths:
   /items:
     get:
       description: Returns all items.
-      operationId: findItems
+      operationId: getItems
+      parameters:
+        - $ref: "#/components/parameters/offsetParam"
+        - $ref: "#/components/parameters/limitParam"
       responses:
         400:
           $ref: "#/components/responses/400BadRequest"
@@ -420,7 +552,13 @@ paths:
   /items/{id}:
     get:
       description: Finds an item by its ID.
-      operationId: findItemById
+      operationId: getItem
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
       responses:
         400:
           $ref: "#/components/responses/400BadRequest"
@@ -449,7 +587,10 @@ paths:
   /warehouses:
     get:
       description: Returns all warehouses.
-      operationId: findWarehouses
+      operationId: getWarehouses
+      parameters:
+        - $ref: "#/components/parameters/offsetParam"
+        - $ref: "#/components/parameters/limitParam"
       responses:
         400:
           $ref: "#/components/responses/400BadRequest"
@@ -478,7 +619,13 @@ paths:
   /warehouses/{id}:
     get:
       description: Finds a warehouse by its ID.
-      operationId: findWarehouseById
+      operationId: getWarehouse
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
       responses:
         400:
           $ref: "#/components/responses/400BadRequest"
