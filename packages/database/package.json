@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "yarn clean && yarn build:image",
+    "build": "yarn build:image",
     "build:image": "docker build . -t vue-dashboards/mssql",
     "dev": "docker run --name primavera-db --rm -p 1433:1433 --env-file ../api/.env.development vue-dashboards/mssql",
-	"clean": "docker rm vue-dashboards/mssql || exit 0"
+    "debug": "docker exec -it primavera-db /bin/sh"
   }
 }

@@ -1,6 +1,6 @@
 FROM mcr.microsoft.com/mssql/server
 WORKDIR /app
-COPY ./scripts/*.sql .
+COPY ./scripts/setup.sql .
 ENV ACCEPT_EULA Y
 ARG SA_PASSWORD
 EXPOSE 1433

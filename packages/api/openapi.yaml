@@ -1,4 +1,4 @@
-openapi: 3.0.2
+openapi: 3.0.3
 servers:
   - url: http://localhost:{port}/api
     description: Localhost server
@@ -15,3 +15,644 @@ servers:
 info:
   title: Dash API
   version: "1.0.0"
+  description: Node.js API for business statistics featuring backoffice user management
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Error:
+      type: object
+      properties:
+        status:
+          type: integer
+        title:
+          type: string
+        detail:
+          type: string
+      required:
+        - status
+        - title
+        - detail
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+          writeOnly: true
+        salt:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        isDisabled:
+          type: boolean
+          default: true
+        isAdmin:
+          type: boolean
+          default: false
+      required:
+        - email
+        - password
+        - firstName
+        - lastName
+    Client:
+      type: object
+      properties:
+        id:
+          type: string
+        address:
+          type: string
+        postalCode:
+          type: string
+        city:
+          type: string
+        country:
+          type: string
+        tin:
+          type: integer
+    Item:
+      type: object
+      properties:
+        id:
+          type: string
+        description:
+          type: string
+        barCode:
+          type: string
+        vat:
+          type: number
+          format: double
+          minimum: 0
+          maximum: 99
+        discount:
+          type: number
+          format: double
+          minimum: 0
+          maximum: 99
+        supplier:
+          type: string
+    Warehouse:
+      type: object
+      properties:
+        id:
+          type: string
+        description:
+          type: string
+        address:
+          type: string
+        postalCode:
+          type: string
+        city:
+          type: string
+        country:
+          type: string
+  responses:
+    400BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          examples:
+            BadRequest:
+              value:
+                status: 400
+                title: Bad Request
+                detail: This is a generic error.
+            InvalidAction:
+              value:
+                status: 400
+                title: Invalid Action
+                detail: The action requested was not valid for this resource
+            InvalidResource:
+              value:
+                status: 400
+                title: Invalid Resource
+                detail: The resource submitted could not be validated
+            JsonParseError:
+              value:
+                status: 400
+                title: JSON Parse Error
+                detail: We encountered an unspecified JSON parsing error
+    401Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          examples:
+            TokenMissing:
+              value:
+                status: 401
+                title: Token Missing
+                detail: Token has not yet been provided
+            TokenInvalid:
+              value:
+                status: 401
+                title: Token Invalid
+                detail: Your token is invalid.
+            TokenExpired:
+              value:
+                status: 401
+                title: Token Expired
+                detail: Your token has expire
+    403Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          examples:
+            Forbidden:
+              value:
+                status: 403
+                title: Forbidden
+                detail: You are not permitted to access this resource
+            UserDisabled:
+              value:
+                status: 403
+                title: User Disabled
+                detail: This account has been disabled.
+    404NotFound:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          examples:
+            ResourceNotFound:
+              value:
+                status: 404
+                title: Resource Not Found
+                detail: The requested resource could not be found
+    414RequestUriTooLong:
+      description: Request-URI Too Long
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          examples:
+            ResourceNestingTooDeep:
+              value:
+                status: 414
+                title: Resource Nesting Too Deep
+                detail: The sub-resource requested is nested too deeply.
+    429TooManyRequests:
+      description: Too Many Requests
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          examples:
+            TooManyRequests:
+              value:
+                status: 429
+                title: Too Many Requests
+                detail: You have exceeded the limit of simultaneous connections
+    500InternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          examples:
+            InternalServerError:
+              value:
+                status: 500
+                title: Internal Server Error
+                detail: An unexpected internal error has occurred. Please contact Support for more information.
+    501NotImplemented:
+      description: Not Implemented
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          examples:
+            InternalServerError:
+              value:
+                status: 501
+                title: Not Implemented Error
+                detail: The server does not support the functionality required to fulfill the request.
+    503ServiceUnavailable:
+      description: Service Unavailable
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          examples:
+            ComplianceRelated:
+              value:
+                status: 503
+                title: Compliance Related
+                detail: This method has been disabled
+  parameters:
+    offsetParam:
+      name: offset
+      description: The number of items to skip before starting to collect the result set.
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 0
+    limitParam:
+      name: limit
+      description: The numbers of items to return.
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 50
+        default: 20
+security:
+  - bearerAuth: []
+paths:
+  /users:
+    get:
+      description: Returns all users.
+      operationId: getUsers
+      parameters:
+        - $ref: "#/components/parameters/offsetParam"
+        - $ref: "#/components/parameters/limitParam"
+        - name: isAdmin
+          description: Filter only admin users.
+          in: query
+          schema:
+            type: boolean
+      responses:
+        400:
+          $ref: "#/components/responses/400BadRequest"
+        401:
+          $ref: "#/components/responses/401Unauthorized"
+        403:
+          $ref: "#/components/responses/403Forbidden"
+        414:
+          $ref: "#/components/responses/414RequestUriTooLong"
+        429:
+          $ref: "#/components/responses/429TooManyRequests"
+        500:
+          $ref: "#/components/responses/500InternalServerError"
+        501:
+          $ref: "#/components/responses/501NotImplemented"
+        503:
+          $ref: "#/components/responses/503ServiceUnavailable"
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
+    post:
+      description: Creates a user and returns the user ID
+      operationId: createUser
+      requestBody:
+        required: true
+        description: A JSON object that contains the user required fields.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      responses:
+        400:
+          $ref: "#/components/responses/400BadRequest"
+        401:
+          $ref: "#/components/responses/401Unauthorized"
+        403:
+          $ref: "#/components/responses/403Forbidden"
+        414:
+          $ref: "#/components/responses/414RequestUriTooLong"
+        429:
+          $ref: "#/components/responses/429TooManyRequests"
+        500:
+          $ref: "#/components/responses/500InternalServerError"
+        501:
+          $ref: "#/components/responses/501NotImplemented"
+        503:
+          $ref: "#/components/responses/503ServiceUnavailable"
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    description: ID of the created user.
+          links:
+            GetUserByUserId:
+              operationId: getUser
+              parameters:
+                userId: "$response.body#/id"
+              description: |
+                The `id` value returned in the response can be used as
+                the `id` parameter in `GET /users/{id}`.
+  /users/{id}:
+    get:
+      description: Finds a user by its ID.
+      operationId: getUser
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        400:
+          $ref: "#/components/responses/400BadRequest"
+        401:
+          $ref: "#/components/responses/401Unauthorized"
+        403:
+          $ref: "#/components/responses/403Forbidden"
+        404:
+          $ref: "#/components/responses/404NotFound"
+        414:
+          $ref: "#/components/responses/414RequestUriTooLong"
+        429:
+          $ref: "#/components/responses/429TooManyRequests"
+        500:
+          $ref: "#/components/responses/500InternalServerError"
+        501:
+          $ref: "#/components/responses/501NotImplemented"
+        503:
+          $ref: "#/components/responses/503ServiceUnavailable"
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+    patch:
+      description: Updates a user by its ID.
+      operationId: updateUser
+      requestBody:
+        required: true
+        description: A JSON object that contains the user required fields.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      responses:
+        400:
+          $ref: "#/components/responses/400BadRequest"
+        401:
+          $ref: "#/components/responses/401Unauthorized"
+        403:
+          $ref: "#/components/responses/403Forbidden"
+        414:
+          $ref: "#/components/responses/414RequestUriTooLong"
+        429:
+          $ref: "#/components/responses/429TooManyRequests"
+        500:
+          $ref: "#/components/responses/500InternalServerError"
+        501:
+          $ref: "#/components/responses/501NotImplemented"
+        503:
+          $ref: "#/components/responses/503ServiceUnavailable"
+        204:
+          description: No Content
+    delete:
+      description: Deletes a user by its ID.
+      operationId: deleteUser
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        400:
+          $ref: "#/components/responses/400BadRequest"
+        401:
+          $ref: "#/components/responses/401Unauthorized"
+        403:
+          $ref: "#/components/responses/403Forbidden"
+        404:
+          $ref: "#/components/responses/404NotFound"
+        414:
+          $ref: "#/components/responses/414RequestUriTooLong"
+        429:
+          $ref: "#/components/responses/429TooManyRequests"
+        500:
+          $ref: "#/components/responses/500InternalServerError"
+        501:
+          $ref: "#/components/responses/501NotImplemented"
+        503:
+          $ref: "#/components/responses/503ServiceUnavailable"
+        204:
+          description: No Content
+  /clients:
+    get:
+      description: Returns all clients.
+      operationId: getClients
+      responses:
+        400:
+          $ref: "#/components/responses/400BadRequest"
+        401:
+          $ref: "#/components/responses/401Unauthorized"
+        403:
+          $ref: "#/components/responses/403Forbidden"
+        414:
+          $ref: "#/components/responses/414RequestUriTooLong"
+        429:
+          $ref: "#/components/responses/429TooManyRequests"
+        500:
+          $ref: "#/components/responses/500InternalServerError"
+        501:
+          $ref: "#/components/responses/501NotImplemented"
+        503:
+          $ref: "#/components/responses/503ServiceUnavailable"
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Client"
+  /clients/{id}:
+    get:
+      description: Finds a client by its ID.
+      operationId: getClient
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        400:
+          $ref: "#/components/responses/400BadRequest"
+        401:
+          $ref: "#/components/responses/401Unauthorized"
+        403:
+          $ref: "#/components/responses/403Forbidden"
+        404:
+          $ref: "#/components/responses/404NotFound"
+        414:
+          $ref: "#/components/responses/414RequestUriTooLong"
+        429:
+          $ref: "#/components/responses/429TooManyRequests"
+        500:
+          $ref: "#/components/responses/500InternalServerError"
+        501:
+          $ref: "#/components/responses/501NotImplemented"
+        503:
+          $ref: "#/components/responses/503ServiceUnavailable"
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Client"
+  /items:
+    get:
+      description: Returns all items.
+      operationId: getItems
+      parameters:
+        - $ref: "#/components/parameters/offsetParam"
+        - $ref: "#/components/parameters/limitParam"
+      responses:
+        400:
+          $ref: "#/components/responses/400BadRequest"
+        401:
+          $ref: "#/components/responses/401Unauthorized"
+        403:
+          $ref: "#/components/responses/403Forbidden"
+        414:
+          $ref: "#/components/responses/414RequestUriTooLong"
+        429:
+          $ref: "#/components/responses/429TooManyRequests"
+        500:
+          $ref: "#/components/responses/500InternalServerError"
+        501:
+          $ref: "#/components/responses/501NotImplemented"
+        503:
+          $ref: "#/components/responses/503ServiceUnavailable"
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Item"
+  /items/{id}:
+    get:
+      description: Finds an item by its ID.
+      operationId: getItem
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        400:
+          $ref: "#/components/responses/400BadRequest"
+        401:
+          $ref: "#/components/responses/401Unauthorized"
+        403:
+          $ref: "#/components/responses/403Forbidden"
+        404:
+          $ref: "#/components/responses/404NotFound"
+        414:
+          $ref: "#/components/responses/414RequestUriTooLong"
+        429:
+          $ref: "#/components/responses/429TooManyRequests"
+        500:
+          $ref: "#/components/responses/500InternalServerError"
+        501:
+          $ref: "#/components/responses/501NotImplemented"
+        503:
+          $ref: "#/components/responses/503ServiceUnavailable"
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Item"
+  /warehouses:
+    get:
+      description: Returns all warehouses.
+      operationId: getWarehouses
+      parameters:
+        - $ref: "#/components/parameters/offsetParam"
+        - $ref: "#/components/parameters/limitParam"
+      responses:
+        400:
+          $ref: "#/components/responses/400BadRequest"
+        401:
+          $ref: "#/components/responses/401Unauthorized"
+        403:
+          $ref: "#/components/responses/403Forbidden"
+        414:
+          $ref: "#/components/responses/414RequestUriTooLong"
+        429:
+          $ref: "#/components/responses/429TooManyRequests"
+        500:
+          $ref: "#/components/responses/500InternalServerError"
+        501:
+          $ref: "#/components/responses/501NotImplemented"
+        503:
+          $ref: "#/components/responses/503ServiceUnavailable"
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Warehouse"
+  /warehouses/{id}:
+    get:
+      description: Finds a warehouse by its ID.
+      operationId: getWarehouse
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        400:
+          $ref: "#/components/responses/400BadRequest"
+        401:
+          $ref: "#/components/responses/401Unauthorized"
+        403:
+          $ref: "#/components/responses/403Forbidden"
+        404:
+          $ref: "#/components/responses/404NotFound"
+        414:
+          $ref: "#/components/responses/414RequestUriTooLong"
+        429:
+          $ref: "#/components/responses/429TooManyRequests"
+        500:
+          $ref: "#/components/responses/500InternalServerError"
+        501:
+          $ref: "#/components/responses/501NotImplemented"
+        503:
+          $ref: "#/components/responses/503ServiceUnavailable"
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Warehouse"
