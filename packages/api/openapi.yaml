@@ -309,7 +309,7 @@ paths:
         503:
           $ref: "#/components/responses/503ServiceUnavailable"
         200:
-          description: Success
+          description: OK
           content:
             application/json:
               schema:
@@ -393,7 +393,7 @@ paths:
         503:
           $ref: "#/components/responses/503ServiceUnavailable"
         200:
-          description: Success
+          description: OK
           content:
             application/json:
               schema:
@@ -480,7 +480,7 @@ paths:
         503:
           $ref: "#/components/responses/503ServiceUnavailable"
         200:
-          description: Success
+          description: OK
           content:
             application/json:
               schema:
@@ -517,7 +517,7 @@ paths:
         503:
           $ref: "#/components/responses/503ServiceUnavailable"
         200:
-          description: Success
+          description: OK
           content:
             application/json:
               schema:
@@ -547,7 +547,7 @@ paths:
         503:
           $ref: "#/components/responses/503ServiceUnavailable"
         200:
-          description: Success
+          description: OK
           content:
             application/json:
               schema:
@@ -584,7 +584,7 @@ paths:
         503:
           $ref: "#/components/responses/503ServiceUnavailable"
         200:
-          description: Success
+          description: OK
           content:
             application/json:
               schema:
@@ -614,7 +614,7 @@ paths:
         503:
           $ref: "#/components/responses/503ServiceUnavailable"
         200:
-          description: Success
+          description: OK
           content:
             application/json:
               schema:
@@ -651,7 +651,7 @@ paths:
         503:
           $ref: "#/components/responses/503ServiceUnavailable"
         200:
-          description: Success
+          description: OK
           content:
             application/json:
               schema:
